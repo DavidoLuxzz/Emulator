@@ -7,7 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A137B7842C94ABEF004E9FE0 /* shaders.c */; };
 		A1FEAE412C943661004EA125 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE402C943661004EA125 /* main.c */; };
+		A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE482C943676004EA125 /* OpenGL.framework */; };
+		A1FEAE4B2C9436CD004EA125 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */; };
+		A1FEAE4C2C9436CD004EA125 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A1FEAE512C943BC3004EA125 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */; };
+		A1FEAE522C943BC3004EA125 /* libGLEW.2.2.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A1FEAE542C943E88004EA125 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE532C943E88004EA125 /* glad.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -20,11 +27,29 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		A1FEAE4D2C9436CD004EA125 /* Embed Libraries */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				A1FEAE4C2C9436CD004EA125 /* libglfw.3.3.dylib in Embed Libraries */,
+				A1FEAE522C943BC3004EA125 /* libGLEW.2.2.0.dylib in Embed Libraries */,
+			);
+			name = "Embed Libraries";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		A137B7832C94ABEF004E9FE0 /* shaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shaders.h; sourceTree = "<group>"; };
+		A137B7842C94ABEF004E9FE0 /* shaders.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shaders.c; sourceTree = "<group>"; };
 		A1FEAE3D2C943661004EA125 /* Emulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Emulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1FEAE402C943661004EA125 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		A1FEAE482C943676004EA125 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3.10/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
+		A1FEAE532C943E88004EA125 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,6 +57,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1FEAE4B2C9436CD004EA125 /* libglfw.3.3.dylib in Frameworks */,
+				A1FEAE512C943BC3004EA125 /* libGLEW.2.2.0.dylib in Frameworks */,
+				A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +71,7 @@
 			children = (
 				A1FEAE3F2C943661004EA125 /* Emulator */,
 				A1FEAE3E2C943661004EA125 /* Products */,
+				A1FEAE472C943675004EA125 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -57,9 +86,22 @@
 		A1FEAE3F2C943661004EA125 /* Emulator */ = {
 			isa = PBXGroup;
 			children = (
+				A1FEAE532C943E88004EA125 /* glad.c */,
 				A1FEAE402C943661004EA125 /* main.c */,
+				A137B7832C94ABEF004E9FE0 /* shaders.h */,
+				A137B7842C94ABEF004E9FE0 /* shaders.c */,
 			);
 			path = Emulator;
+			sourceTree = "<group>";
+		};
+		A1FEAE472C943675004EA125 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */,
+				A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */,
+				A1FEAE482C943676004EA125 /* OpenGL.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -72,6 +114,7 @@
 				A1FEAE392C943661004EA125 /* Sources */,
 				A1FEAE3A2C943661004EA125 /* Frameworks */,
 				A1FEAE3B2C943661004EA125 /* CopyFiles */,
+				A1FEAE4D2C9436CD004EA125 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -120,6 +163,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1FEAE412C943661004EA125 /* main.c in Sources */,
+				A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */,
+				A1FEAE542C943E88004EA125 /* glad.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +284,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.3.10/lib,
+					/usr/local/Cellar/glew/2.2.0_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -247,6 +298,12 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				HEADER_SEARCH_PATHS = /usr/local/include;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.3.10/lib,
+					/usr/local/Cellar/glew/2.2.0_1/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
