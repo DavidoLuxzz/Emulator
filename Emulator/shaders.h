@@ -8,8 +8,6 @@
 #ifndef shaders_h
 #define shaders_h
 
-#include <glad/glad.h>
-
 extern const char *__VSSRC;
 #define DEFAULT_VERTEX_SHADER_SOURCE __VSSRC
 extern const char *__FSSRC;
@@ -17,7 +15,8 @@ extern const char *__FSSRC;
 extern int shaderSuccess;
 extern char shaderInfoLog[];
 
-void logShader(GLuint);
-GLuint createShader(const char*, GLenum);
+void logShader(unsigned int);
+unsigned int _ng_create_shader(const char*, unsigned int);
+unsigned int _ng_create_program(void);
 
 #endif /* shaders_h */

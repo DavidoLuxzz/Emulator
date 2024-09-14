@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A137B7842C94ABEF004E9FE0 /* shaders.c */; };
+		A1BD71A52C95A76E0086EE42 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71A42C95A76E0086EE42 /* texture.c */; };
+		A1BD71AA2C95A9DA0086EE42 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71A92C95A9DA0086EE42 /* window.c */; };
+		A1BD71AD2C95C13A0086EE42 /* ng_gl.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71AC2C95C13A0086EE42 /* ng_gl.c */; };
+		A1BD71B02C95C2820086EE42 /* ngraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71AF2C95C2820086EE42 /* ngraphics.c */; };
 		A1FEAE412C943661004EA125 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE402C943661004EA125 /* main.c */; };
 		A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE482C943676004EA125 /* OpenGL.framework */; };
 		A1FEAE4B2C9436CD004EA125 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */; };
@@ -44,6 +48,14 @@
 /* Begin PBXFileReference section */
 		A137B7832C94ABEF004E9FE0 /* shaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shaders.h; sourceTree = "<group>"; };
 		A137B7842C94ABEF004E9FE0 /* shaders.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shaders.c; sourceTree = "<group>"; };
+		A1BD71A32C95A76E0086EE42 /* texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
+		A1BD71A42C95A76E0086EE42 /* texture.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = texture.c; sourceTree = "<group>"; };
+		A1BD71A82C95A9DA0086EE42 /* window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
+		A1BD71A92C95A9DA0086EE42 /* window.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
+		A1BD71AB2C95C13A0086EE42 /* ng_gl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ng_gl.h; sourceTree = "<group>"; };
+		A1BD71AC2C95C13A0086EE42 /* ng_gl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ng_gl.c; sourceTree = "<group>"; };
+		A1BD71AE2C95C2820086EE42 /* ngraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ngraphics.h; sourceTree = "<group>"; };
+		A1BD71AF2C95C2820086EE42 /* ngraphics.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ngraphics.c; sourceTree = "<group>"; };
 		A1FEAE3D2C943661004EA125 /* Emulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Emulator; sourceTree = BUILT_PRODUCTS_DIR; };
 		A1FEAE402C943661004EA125 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		A1FEAE482C943676004EA125 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
@@ -90,6 +102,14 @@
 				A1FEAE402C943661004EA125 /* main.c */,
 				A137B7832C94ABEF004E9FE0 /* shaders.h */,
 				A137B7842C94ABEF004E9FE0 /* shaders.c */,
+				A1BD71A32C95A76E0086EE42 /* texture.h */,
+				A1BD71A42C95A76E0086EE42 /* texture.c */,
+				A1BD71A82C95A9DA0086EE42 /* window.h */,
+				A1BD71A92C95A9DA0086EE42 /* window.c */,
+				A1BD71AB2C95C13A0086EE42 /* ng_gl.h */,
+				A1BD71AC2C95C13A0086EE42 /* ng_gl.c */,
+				A1BD71AE2C95C2820086EE42 /* ngraphics.h */,
+				A1BD71AF2C95C2820086EE42 /* ngraphics.c */,
 			);
 			path = Emulator;
 			sourceTree = "<group>";
@@ -163,8 +183,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				A1FEAE412C943661004EA125 /* main.c in Sources */,
+				A1BD71B02C95C2820086EE42 /* ngraphics.c in Sources */,
 				A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */,
 				A1FEAE542C943E88004EA125 /* glad.c in Sources */,
+				A1BD71AD2C95C13A0086EE42 /* ng_gl.c in Sources */,
+				A1BD71AA2C95A9DA0086EE42 /* window.c in Sources */,
+				A1BD71A52C95A76E0086EE42 /* texture.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
