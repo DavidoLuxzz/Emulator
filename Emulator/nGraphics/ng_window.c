@@ -5,10 +5,11 @@
 //  Created by Luka on 14.9.24..
 //
 
-#include "window.h"
+#include "ng_window.h"
 #include "ngraphics.h"
 
 GLFWwindow* __ngWindow = NULL;
+_Bool __ngKeyLocks[GLFW_KEY_LAST] = {0};
 
 void ngCreateWindow(int width, int height, const char* title){
     glfwInit();
@@ -22,6 +23,7 @@ void ngCreateWindow(int width, int height, const char* title){
     
     __ngScreenWidth = width;
     __ngScreenHeight = height;
+    __ngScreenSize = width*height;
     // glfw window creation
     __ngWindow = glfwCreateWindow(width, height, title, NULL, NULL);
     if (__ngWindow == NULL) {
@@ -33,6 +35,12 @@ void ngCreateWindow(int width, int height, const char* title){
     glfwMakeContextCurrent(__ngWindow);
     
     __ngScreen = (GLubyte*) malloc(width*height*3);
+    if (!__ngScreen) {
+        __ngflags[NG_SCREEN_BUFFER_STATUS] = 0;
+        printf("[ ERROR ] memory allocation error");
+    } else {
+        __ngflags[NG_SCREEN_BUFFER_STATUS] = 1;
+    }
     
     __ngflags[NG_WINDOW_CREATE_SUCCESS] = 1;
 }
@@ -48,14 +56,35 @@ void ngPollEvents(void){
     glfwPollEvents();
 }
 
+int ngGetKey(int key){
+    int gk = glfwGetKey(__ngWindow, key);
+    if (ngIsKeyLocked(key)){
+        __ngKeyLocks[key] = gk%2;
+        return 0;
+    }
+    return glfwGetKey(__ngWindow, key);
+}
+void ngLockKey(int key){
+    __ngKeyLocks[key] = 1;
+}
+void ngUnlockKey(int key){
+    __ngKeyLocks[key] = 0;
+}
+_Bool ngIsKeyLocked(int key){
+    return __ngKeyLocks[key];
+}
+void ngSetWindowTitle(const char* title){
+    glfwSetWindowTitle(__ngWindow, title);
+}
+
 void _ng_create_window_screen_buffers(void){
     // set up vertex data (and buffer(s)) and configure vertex attributes
     float vertices[] = {
         // positions          // colors           // texture coords
-         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 1.0f, // top right
-         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 0.0f, // bottom right
-        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 0.0f, // bottom left
-        -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 1.0f  // top left
+         1.0f,  1.0f, 0.0f,   1.0f, 0.0f, 0.0f,   1.0f, 0.0f, // top right
+         1.0f, -1.0f, 0.0f,   0.0f, 1.0f, 0.0f,   1.0f, 1.0f, // bottom right
+        -1.0f, -1.0f, 0.0f,   0.0f, 0.0f, 1.0f,   0.0f, 1.0f, // bottom left
+        -1.0f,  1.0f, 0.0f,   1.0f, 1.0f, 0.0f,   0.0f, 0.0f  // top left
     };
     unsigned int indices[] = {
         0, 1, 3, // first triangle
@@ -86,13 +115,15 @@ void _ng_create_window_screen_buffers(void){
 
 void _ng_create_screen_texture(void){
     glGenTextures(1, &__ngScreenTexture);
+    if (__ngScreenTexture){
+        __ngflags[NG_SCREEN_TEXTURE_STATUS] = 1;
+    } else {
+        __ngflags[NG_SCREEN_TEXTURE_STATUS] = 0;
+        printf("[ ERROR ] OpenGL screen texture creation error\n");
+    }
     glBindTexture(GL_TEXTURE_2D, __ngScreenTexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     glTexImage2D(GL_TEXTURE_2D, 0,GL_RGB,__ngScreenWidth,__ngScreenHeight,0,GL_RGB,GL_UNSIGNED_BYTE,NULL);
     glGenerateMipmap(GL_TEXTURE_2D);
-}
-
-int ngGet(int flag){
-    return __ngflags[flag];
 }

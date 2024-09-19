@@ -5,7 +5,7 @@
 //  Created by Luka on 14.9.24..
 //
 
-#include "texture.h"
+#include "ng_texture.h"
 
 GLuint loadTexture(int width, int height, GLubyte* data){
     // load and create a texture

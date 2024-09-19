@@ -7,61 +7,73 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A137B7842C94ABEF004E9FE0 /* shaders.c */; };
-		A1BD71A52C95A76E0086EE42 /* texture.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71A42C95A76E0086EE42 /* texture.c */; };
-		A1BD71AA2C95A9DA0086EE42 /* window.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71A92C95A9DA0086EE42 /* window.c */; };
-		A1BD71AD2C95C13A0086EE42 /* ng_gl.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71AC2C95C13A0086EE42 /* ng_gl.c */; };
-		A1BD71B02C95C2820086EE42 /* ngraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = A1BD71AF2C95C2820086EE42 /* ngraphics.c */; };
-		A1FEAE412C943661004EA125 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE402C943661004EA125 /* main.c */; };
+		A1316A632C9CA7E600551436 /* prog0asm.s in Sources */ = {isa = PBXBuildFile; fileRef = A1316A622C9CA7E600551436 /* prog0asm.s */; };
+		A158E7082C981BE9002D5A60 /* _ng_font1.c in Sources */ = {isa = PBXBuildFile; fileRef = A158E7072C981BE9002D5A60 /* _ng_font1.c */; };
+		A19534F32C9A0EA2005751E8 /* prog0.c in Sources */ = {isa = PBXBuildFile; fileRef = A19534F22C9A0EA2005751E8 /* prog0.c */; };
+		A1B635982C975D4E00E84AD7 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */; };
+		A1B635992C975D4E00E84AD7 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		A1B635A82C975DA700E84AD7 /* ng_window.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B6359C2C975DA700E84AD7 /* ng_window.c */; };
+		A1B635A92C975DA700E84AD7 /* ngraphics.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B6359D2C975DA700E84AD7 /* ngraphics.c */; };
+		A1B635AA2C975DA700E84AD7 /* ng_texture.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B6359E2C975DA700E84AD7 /* ng_texture.c */; };
+		A1B635AB2C975DA700E84AD7 /* ng_font.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B6359F2C975DA700E84AD7 /* ng_font.c */; };
+		A1B635AC2C975DA700E84AD7 /* ng_gl.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B635A22C975DA700E84AD7 /* ng_gl.c */; };
+		A1B635AD2C975DA700E84AD7 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B635A42C975DA700E84AD7 /* glad.c */; };
+		A1B635AE2C975DA700E84AD7 /* ng_shaders.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B635A72C975DA700E84AD7 /* ng_shaders.c */; };
+		A1D472E02C977A4E00F5DD24 /* _ng_font0.c in Sources */ = {isa = PBXBuildFile; fileRef = A1D472DF2C97760600F5DD24 /* _ng_font0.c */; };
+		A1F06C392C99E85600A7A979 /* ng_loadUI.c in Sources */ = {isa = PBXBuildFile; fileRef = A1F06C382C99E85600A7A979 /* ng_loadUI.c */; };
+		A1FEAE412C943661004EA125 /* emu_main.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE402C943661004EA125 /* emu_main.c */; };
 		A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE482C943676004EA125 /* OpenGL.framework */; };
-		A1FEAE4B2C9436CD004EA125 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */; };
-		A1FEAE4C2C9436CD004EA125 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		A1FEAE512C943BC3004EA125 /* libGLEW.2.2.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */; };
-		A1FEAE522C943BC3004EA125 /* libGLEW.2.2.0.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		A1FEAE542C943E88004EA125 /* glad.c in Sources */ = {isa = PBXBuildFile; fileRef = A1FEAE532C943E88004EA125 /* glad.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A1FEAE3B2C943661004EA125 /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-		A1FEAE4D2C9436CD004EA125 /* Embed Libraries */ = {
+		A1B635932C975CCE00E84AD7 /* Embed Libraries */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				A1FEAE4C2C9436CD004EA125 /* libglfw.3.3.dylib in Embed Libraries */,
-				A1FEAE522C943BC3004EA125 /* libGLEW.2.2.0.dylib in Embed Libraries */,
+				A1B635992C975D4E00E84AD7 /* libglfw.3.3.dylib in Embed Libraries */,
 			);
 			name = "Embed Libraries";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		A1FEAE3B2C943661004EA125 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = usr/share/man/man1;
+			dstSubfolderSpec = 7;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A137B7832C94ABEF004E9FE0 /* shaders.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = shaders.h; sourceTree = "<group>"; };
-		A137B7842C94ABEF004E9FE0 /* shaders.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shaders.c; sourceTree = "<group>"; };
-		A1BD71A32C95A76E0086EE42 /* texture.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = texture.h; sourceTree = "<group>"; };
-		A1BD71A42C95A76E0086EE42 /* texture.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = texture.c; sourceTree = "<group>"; };
-		A1BD71A82C95A9DA0086EE42 /* window.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = window.h; sourceTree = "<group>"; };
-		A1BD71A92C95A9DA0086EE42 /* window.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = window.c; sourceTree = "<group>"; };
-		A1BD71AB2C95C13A0086EE42 /* ng_gl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ng_gl.h; sourceTree = "<group>"; };
-		A1BD71AC2C95C13A0086EE42 /* ng_gl.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ng_gl.c; sourceTree = "<group>"; };
-		A1BD71AE2C95C2820086EE42 /* ngraphics.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ngraphics.h; sourceTree = "<group>"; };
-		A1BD71AF2C95C2820086EE42 /* ngraphics.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ngraphics.c; sourceTree = "<group>"; };
+		A1316A622C9CA7E600551436 /* prog0asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = prog0asm.s; sourceTree = "<group>"; };
+		A158E7072C981BE9002D5A60 /* _ng_font1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _ng_font1.c; sourceTree = "<group>"; };
+		A19534F12C9A0EA2005751E8 /* prog0.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prog0.h; sourceTree = "<group>"; };
+		A19534F22C9A0EA2005751E8 /* prog0.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = prog0.c; sourceTree = "<group>"; };
+		A19534F42C9A1140005751E8 /* emu_main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = emu_main.h; sourceTree = "<group>"; };
+		A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3.10/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
+		A1B6359B2C975DA700E84AD7 /* ng_gl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ng_gl.h; sourceTree = "<group>"; };
+		A1B6359C2C975DA700E84AD7 /* ng_window.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ng_window.c; sourceTree = "<group>"; };
+		A1B6359D2C975DA700E84AD7 /* ngraphics.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ngraphics.c; sourceTree = "<group>"; };
+		A1B6359E2C975DA700E84AD7 /* ng_texture.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ng_texture.c; sourceTree = "<group>"; };
+		A1B6359F2C975DA700E84AD7 /* ng_font.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ng_font.c; sourceTree = "<group>"; };
+		A1B635A02C975DA700E84AD7 /* ng_shaders.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ng_shaders.h; sourceTree = "<group>"; };
+		A1B635A12C975DA700E84AD7 /* ng_window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ng_window.h; sourceTree = "<group>"; };
+		A1B635A22C975DA700E84AD7 /* ng_gl.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ng_gl.c; sourceTree = "<group>"; };
+		A1B635A32C975DA700E84AD7 /* ngraphics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ngraphics.h; sourceTree = "<group>"; };
+		A1B635A42C975DA700E84AD7 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
+		A1B635A52C975DA700E84AD7 /* ng_font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ng_font.h; sourceTree = "<group>"; };
+		A1B635A62C975DA700E84AD7 /* ng_texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ng_texture.h; sourceTree = "<group>"; };
+		A1B635A72C975DA700E84AD7 /* ng_shaders.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ng_shaders.c; sourceTree = "<group>"; };
+		A1D472DF2C97760600F5DD24 /* _ng_font0.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _ng_font0.c; sourceTree = "<group>"; };
+		A1F06C372C99E85600A7A979 /* ng_loadUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ng_loadUI.h; sourceTree = "<group>"; };
+		A1F06C382C99E85600A7A979 /* ng_loadUI.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ng_loadUI.c; sourceTree = "<group>"; };
 		A1FEAE3D2C943661004EA125 /* Emulator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Emulator; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1FEAE402C943661004EA125 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		A1FEAE402C943661004EA125 /* emu_main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = emu_main.c; sourceTree = "<group>"; };
 		A1FEAE482C943676004EA125 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
-		A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3.10/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
-		A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.2.0.dylib; path = ../../../../usr/local/Cellar/glew/2.2.0_1/lib/libGLEW.2.2.0.dylib; sourceTree = "<group>"; };
-		A1FEAE532C943E88004EA125 /* glad.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = glad.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,8 +81,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1FEAE4B2C9436CD004EA125 /* libglfw.3.3.dylib in Frameworks */,
-				A1FEAE512C943BC3004EA125 /* libGLEW.2.2.0.dylib in Frameworks */,
+				A1B635982C975D4E00E84AD7 /* libglfw.3.3.dylib in Frameworks */,
 				A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +89,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A19534F02C99EF27005751E8 /* programs */ = {
+			isa = PBXGroup;
+			children = (
+				A19534F12C9A0EA2005751E8 /* prog0.h */,
+				A19534F22C9A0EA2005751E8 /* prog0.c */,
+				A1316A622C9CA7E600551436 /* prog0asm.s */,
+			);
+			path = programs;
+			sourceTree = "<group>";
+		};
+		A1B6359A2C975DA700E84AD7 /* nGraphics */ = {
+			isa = PBXGroup;
+			children = (
+				A1D472DF2C97760600F5DD24 /* _ng_font0.c */,
+				A158E7072C981BE9002D5A60 /* _ng_font1.c */,
+				A1B6359B2C975DA700E84AD7 /* ng_gl.h */,
+				A1B6359C2C975DA700E84AD7 /* ng_window.c */,
+				A1B6359D2C975DA700E84AD7 /* ngraphics.c */,
+				A1B6359E2C975DA700E84AD7 /* ng_texture.c */,
+				A1B6359F2C975DA700E84AD7 /* ng_font.c */,
+				A1B635A02C975DA700E84AD7 /* ng_shaders.h */,
+				A1B635A12C975DA700E84AD7 /* ng_window.h */,
+				A1B635A22C975DA700E84AD7 /* ng_gl.c */,
+				A1B635A32C975DA700E84AD7 /* ngraphics.h */,
+				A1B635A42C975DA700E84AD7 /* glad.c */,
+				A1B635A52C975DA700E84AD7 /* ng_font.h */,
+				A1B635A62C975DA700E84AD7 /* ng_texture.h */,
+				A1B635A72C975DA700E84AD7 /* ng_shaders.c */,
+				A1F06C372C99E85600A7A979 /* ng_loadUI.h */,
+				A1F06C382C99E85600A7A979 /* ng_loadUI.c */,
+			);
+			path = nGraphics;
+			sourceTree = "<group>";
+		};
 		A1FEAE342C943661004EA125 = {
 			isa = PBXGroup;
 			children = (
@@ -98,18 +143,10 @@
 		A1FEAE3F2C943661004EA125 /* Emulator */ = {
 			isa = PBXGroup;
 			children = (
-				A1FEAE532C943E88004EA125 /* glad.c */,
-				A1FEAE402C943661004EA125 /* main.c */,
-				A137B7832C94ABEF004E9FE0 /* shaders.h */,
-				A137B7842C94ABEF004E9FE0 /* shaders.c */,
-				A1BD71A32C95A76E0086EE42 /* texture.h */,
-				A1BD71A42C95A76E0086EE42 /* texture.c */,
-				A1BD71A82C95A9DA0086EE42 /* window.h */,
-				A1BD71A92C95A9DA0086EE42 /* window.c */,
-				A1BD71AB2C95C13A0086EE42 /* ng_gl.h */,
-				A1BD71AC2C95C13A0086EE42 /* ng_gl.c */,
-				A1BD71AE2C95C2820086EE42 /* ngraphics.h */,
-				A1BD71AF2C95C2820086EE42 /* ngraphics.c */,
+				A19534F02C99EF27005751E8 /* programs */,
+				A1B6359A2C975DA700E84AD7 /* nGraphics */,
+				A1FEAE402C943661004EA125 /* emu_main.c */,
+				A19534F42C9A1140005751E8 /* emu_main.h */,
 			);
 			path = Emulator;
 			sourceTree = "<group>";
@@ -117,8 +154,7 @@
 		A1FEAE472C943675004EA125 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A1FEAE4E2C9436E1004EA125 /* libGLEW.2.2.0.dylib */,
-				A1FEAE4A2C9436CD004EA125 /* libglfw.3.3.dylib */,
+				A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */,
 				A1FEAE482C943676004EA125 /* OpenGL.framework */,
 			);
 			name = Frameworks;
@@ -134,7 +170,7 @@
 				A1FEAE392C943661004EA125 /* Sources */,
 				A1FEAE3A2C943661004EA125 /* Frameworks */,
 				A1FEAE3B2C943661004EA125 /* CopyFiles */,
-				A1FEAE4D2C9436CD004EA125 /* Embed Libraries */,
+				A1B635932C975CCE00E84AD7 /* Embed Libraries */,
 			);
 			buildRules = (
 			);
@@ -182,13 +218,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A1FEAE412C943661004EA125 /* main.c in Sources */,
-				A1BD71B02C95C2820086EE42 /* ngraphics.c in Sources */,
-				A137B7852C94ABEF004E9FE0 /* shaders.c in Sources */,
-				A1FEAE542C943E88004EA125 /* glad.c in Sources */,
-				A1BD71AD2C95C13A0086EE42 /* ng_gl.c in Sources */,
-				A1BD71AA2C95A9DA0086EE42 /* window.c in Sources */,
-				A1BD71A52C95A76E0086EE42 /* texture.c in Sources */,
+				A19534F32C9A0EA2005751E8 /* prog0.c in Sources */,
+				A1D472E02C977A4E00F5DD24 /* _ng_font0.c in Sources */,
+				A1B635A92C975DA700E84AD7 /* ngraphics.c in Sources */,
+				A1316A632C9CA7E600551436 /* prog0asm.s in Sources */,
+				A1B635AB2C975DA700E84AD7 /* ng_font.c in Sources */,
+				A1B635A82C975DA700E84AD7 /* ng_window.c in Sources */,
+				A1B635AE2C975DA700E84AD7 /* ng_shaders.c in Sources */,
+				A158E7082C981BE9002D5A60 /* _ng_font1.c in Sources */,
+				A1B635AC2C975DA700E84AD7 /* ng_gl.c in Sources */,
+				A1B635AA2C975DA700E84AD7 /* ng_texture.c in Sources */,
+				A1FEAE412C943661004EA125 /* emu_main.c in Sources */,
+				A1B635AD2C975DA700E84AD7 /* glad.c in Sources */,
+				A1F06C392C99E85600A7A979 /* ng_loadUI.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,6 +350,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -322,6 +365,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
 				HEADER_SEARCH_PATHS = /usr/local/include;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

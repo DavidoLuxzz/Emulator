@@ -7,7 +7,7 @@
 
 #include "ng_gl.h"
 #include "ngraphics.h"
-#include "shaders.h"
+#include "ng_shaders.h"
 
 void ngLoadOpenGL(void){
     int gl_load_success = gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);

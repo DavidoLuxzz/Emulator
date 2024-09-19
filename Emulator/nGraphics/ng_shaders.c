@@ -5,7 +5,7 @@
 //  Created by Luka on 13.9.24..
 //
 
-#include "shaders.h"
+#include "ng_shaders.h"
 #include "ngraphics.h"
 
 int shaderSuccess;
