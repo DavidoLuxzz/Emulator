@@ -219,3 +219,65 @@ void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3)
     dot p3 = {x3,y3};
     _ngDrawTriangle(p1, p2, p3);
 }
+// x bigger
+void _ngDrawLineXb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
+    int m_new = 2 * (y2 - y1);
+    int slope_error_new = m_new - (x2 - x1);
+    for (int x = x1, y = y1; x <= x2; x++) {
+        ngDrawPixel(x, y);
+  
+        // Add slope to increment angle formed
+        slope_error_new += m_new;
+  
+        // Slope error reached limit, time to
+        // increment y and update slope error.
+        if (slope_error_new >= 0) {
+            y++;
+            slope_error_new -= 2 * (x2 - x1);
+        }
+    }
+}
+// y bigger
+void _ngDrawLineYb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
+    int m_new = 2 * (x2 - x1);
+    int slope_error_new = m_new - (y2 - y1);
+    for (int x = x1, y = y1; y <= y2; y++) {
+        ngDrawPixel(x, y);
+  
+        // Add slope to increment angle formed
+        slope_error_new += m_new;
+  
+        // Slope error reached limit, time to
+        // increment y and update slope error.
+        if (slope_error_new >= 0) {
+            x++;
+            slope_error_new -= 2 * (y2 - y1);
+        }
+    }
+}
+void ngDrawLine(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
+    GLuint w = x2-x1;
+    GLuint h = y2-y1;
+    if (w>h) _ngDrawLineXb(x1, y1, x2, y2);
+    else _ngDrawLineYb(x1, y1, x2, y2);
+}
+
+void ngDrawSprite_GRAY(GLuint x, GLuint y, GLubyte* sprite, unsigned int sinfo[5]){
+    int w = sinfo[0];
+    int h = sinfo[1];
+    int mul = sinfo[2];
+    int pxsz = sinfo[3];
+    int transparent = sinfo[4];
+    GLubyte r = __ngColor[0];
+    GLubyte g = __ngColor[1];
+    GLubyte b = __ngColor[2];
+    for (int j=0; j<h; j++){
+        for (int i=0; i<w; i++){
+            GLubyte _col = sprite[j*w + i] * mul;
+            if (_col<10 && transparent) continue;
+            ngColor(_col, _col, _col);
+            ngDrawRectangle(x+pxsz*i, y+pxsz*j, pxsz, pxsz);
+        }
+    }
+    ngColor(r,g,b);
+}

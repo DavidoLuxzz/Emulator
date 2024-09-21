@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		A1316A632C9CA7E600551436 /* prog0asm.s in Sources */ = {isa = PBXBuildFile; fileRef = A1316A622C9CA7E600551436 /* prog0asm.s */; };
+		A14F31CB2C9D917B008FC5E6 /* prog0asm.o in Frameworks */ = {isa = PBXBuildFile; fileRef = A14F31CA2C9D917B008FC5E6 /* prog0asm.o */; };
 		A158E7082C981BE9002D5A60 /* _ng_font1.c in Sources */ = {isa = PBXBuildFile; fileRef = A158E7072C981BE9002D5A60 /* _ng_font1.c */; };
-		A19534F32C9A0EA2005751E8 /* prog0.c in Sources */ = {isa = PBXBuildFile; fileRef = A19534F22C9A0EA2005751E8 /* prog0.c */; };
+		A18E30042C9F4B3B00CBF85F /* prog0.c in Sources */ = {isa = PBXBuildFile; fileRef = A19534F22C9A0EA2005751E8 /* prog0.c */; };
 		A1B635982C975D4E00E84AD7 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */; };
 		A1B635992C975D4E00E84AD7 /* libglfw.3.3.dylib in Embed Libraries */ = {isa = PBXBuildFile; fileRef = A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		A1B635A82C975DA700E84AD7 /* ng_window.c in Sources */ = {isa = PBXBuildFile; fileRef = A1B6359C2C975DA700E84AD7 /* ng_window.c */; };
@@ -49,9 +49,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		A1316A622C9CA7E600551436 /* prog0asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = prog0asm.s; sourceTree = "<group>"; };
+		A1316A622C9CA7E600551436 /* prog0asm.s */ = {isa = PBXFileReference; explicitFileType = sourcecode.nasm; path = prog0asm.s; sourceTree = "<group>"; };
+		A14F31CA2C9D917B008FC5E6 /* prog0asm.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = prog0asm.o; sourceTree = "<group>"; };
+		A14F31CC2C9D9366008FC5E6 /* emu_asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = emu_asm.s; sourceTree = "<group>"; };
 		A158E7072C981BE9002D5A60 /* _ng_font1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _ng_font1.c; sourceTree = "<group>"; };
-		A19534F12C9A0EA2005751E8 /* prog0.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prog0.h; sourceTree = "<group>"; };
+		A18E2FFB2C9F405900CBF85F /* prog1asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = prog1asm.s; sourceTree = "<group>"; };
+		A19534F12C9A0EA2005751E8 /* prog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prog.h; sourceTree = "<group>"; };
 		A19534F22C9A0EA2005751E8 /* prog0.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = prog0.c; sourceTree = "<group>"; };
 		A19534F42C9A1140005751E8 /* emu_main.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = emu_main.h; sourceTree = "<group>"; };
 		A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.3.dylib; path = ../../../../usr/local/Cellar/glfw/3.3.10/lib/libglfw.3.3.dylib; sourceTree = "<group>"; };
@@ -83,18 +86,45 @@
 			files = (
 				A1B635982C975D4E00E84AD7 /* libglfw.3.3.dylib in Frameworks */,
 				A1FEAE492C943676004EA125 /* OpenGL.framework in Frameworks */,
+				A14F31CB2C9D917B008FC5E6 /* prog0asm.o in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A18E30022C9F4AAB00CBF85F /* prog1 */ = {
+			isa = PBXGroup;
+			children = (
+				A14F31CA2C9D917B008FC5E6 /* prog0asm.o */,
+				A1316A622C9CA7E600551436 /* prog0asm.s */,
+			);
+			path = prog1;
+			sourceTree = "<group>";
+		};
+		A18E30032C9F4B0E00CBF85F /* prog2 */ = {
+			isa = PBXGroup;
+			children = (
+				A18E2FFB2C9F405900CBF85F /* prog1asm.s */,
+			);
+			path = prog2;
+			sourceTree = "<group>";
+		};
+		A18E30052C9F4B7400CBF85F /* prog0 */ = {
+			isa = PBXGroup;
+			children = (
+				A19534F22C9A0EA2005751E8 /* prog0.c */,
+			);
+			path = prog0;
+			sourceTree = "<group>";
+		};
 		A19534F02C99EF27005751E8 /* programs */ = {
 			isa = PBXGroup;
 			children = (
-				A19534F12C9A0EA2005751E8 /* prog0.h */,
-				A19534F22C9A0EA2005751E8 /* prog0.c */,
-				A1316A622C9CA7E600551436 /* prog0asm.s */,
+				A18E30052C9F4B7400CBF85F /* prog0 */,
+				A18E30022C9F4AAB00CBF85F /* prog1 */,
+				A18E30032C9F4B0E00CBF85F /* prog2 */,
+				A19534F12C9A0EA2005751E8 /* prog.h */,
 			);
 			path = programs;
 			sourceTree = "<group>";
@@ -147,6 +177,7 @@
 				A1B6359A2C975DA700E84AD7 /* nGraphics */,
 				A1FEAE402C943661004EA125 /* emu_main.c */,
 				A19534F42C9A1140005751E8 /* emu_main.h */,
+				A14F31CC2C9D9366008FC5E6 /* emu_asm.s */,
 			);
 			path = Emulator;
 			sourceTree = "<group>";
@@ -218,10 +249,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A19534F32C9A0EA2005751E8 /* prog0.c in Sources */,
 				A1D472E02C977A4E00F5DD24 /* _ng_font0.c in Sources */,
 				A1B635A92C975DA700E84AD7 /* ngraphics.c in Sources */,
-				A1316A632C9CA7E600551436 /* prog0asm.s in Sources */,
+				A18E30042C9F4B3B00CBF85F /* prog0.c in Sources */,
 				A1B635AB2C975DA700E84AD7 /* ng_font.c in Sources */,
 				A1B635A82C975DA700E84AD7 /* ng_window.c in Sources */,
 				A1B635AE2C975DA700E84AD7 /* ng_shaders.c in Sources */,

@@ -6,9 +6,9 @@
 //  Created by Luka on 17.9.24..
 //
 
-#include "prog0.h"
-#include "ngraphics.h"
-#include "emu_main.h"
+#include "prog.h"
+#include "../../nGraphics/ngraphics.h"
+#include "../../emu_main.h"
 
 _Bool redraw = NG_TRUE;
 
@@ -52,12 +52,12 @@ void prog0_move_ball(void){
             balldx = -balldx;
         else prog0_score_up(0);
     }
-    if (ballx+10 >= __ngScreenWidth-15) {
+    if (ballx+25 >= __ngScreenWidth) {
         if (prog0_pip(1))
             balldx = -balldx;
         else prog0_score_up(1);
     }
-    if (bally-10 <=  0 || bally+10 >= __ngScreenHeight) balldy = -balldy;
+    if (bally-10 <= 0 || bally+10 >= __ngScreenHeight) balldy = -balldy;
 }
 
 void prog0_main(void){

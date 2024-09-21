@@ -2,25 +2,26 @@
 #define NG_INCLUDE_LOAD_UI
 #include "nGraphics/ngraphics.h"
 
-#include "programs/prog0.h"
+#include "programs/prog.h"
+NGMAINLOOPFUNC EMU_ALL_PROG[] = {prog0_init,prog0_main, prog1_init,prog1_main};
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
 
 // settings
-unsigned int WIDTH = 1024;
-unsigned int HEIGHT = 600;
+const unsigned int WIDTH = 1024;
+const unsigned int HEIGHT = 600;
 
 _Bool emu_redraw = NG_TRUE;
 _Bool emu_progActive = NG_FALSE;
 int emu_progExitCode;
 
 void emu_input(void){
-    if (ngGetKey(GLFW_KEY_ENTER)){
+    if (ngGetKey(GLFW_KEY_ENTER) || ngGetKey(GLFW_KEY_SPACE)){
         emu_progActive = NG_TRUE;
-        prog0_init();
-        ngSetMainLoopFunction(prog0_main);
+        EMU_ALL_PROG[2*ngUIGetSelectedEntry()]();
+        ngSetMainLoopFunction(EMU_ALL_PROG[2*ngUIGetSelectedEntry() + 1]);
     } else if (ngGetKey(GLFW_KEY_UP)){
         ngUISelectPrevious();
         emu_redraw = NG_TRUE;
@@ -53,6 +54,8 @@ void emu_init(void){
     ngFontScale(1);
     ngSetFont(NG_FONT_GRUB);
     ngConfig(NG_DRAW_TEXT_BACKGROUND, NG_FALSE);
+    ngUnlockKey(GLFW_KEY_UP);
+    ngUnlockKey(GLFW_KEY_DOWN);
 }
 int main(){
     ngCreateWindow(WIDTH, HEIGHT, "EmuLoader");
@@ -60,8 +63,8 @@ int main(){
     ngSetupScreen();
     
     ngUISetup(720, 376, 2);
-    ngUIAddEntry(0, "Lukin program\0");
-    ngUIAddEntry(1, "PAC-MAN\0");
+    ngUIAddEntry(0, "PONG (C)\0");
+    ngUIAddEntry(1, "PONG (asm)\0");
     
     emu_init();
     ngInitTextColoring(2); // max 2 color changes per text
@@ -85,4 +88,15 @@ void emuExit(int code){
     emu_redraw = NG_TRUE;
     ngLockKey(GLFW_KEY_ESCAPE); // lock escape key to prevent quitting application accidentaly
     ngSetMainLoopFunction(emu_after_prog);
+}
+
+// NASM API functions for external assembly programs
+#include <unistd.h>
+void asmEmuExit(int code){
+    emuExit(code);
+}
+
+int asmEmuLog(int n){
+    printf("%d\n", n);
+    return n;
 }

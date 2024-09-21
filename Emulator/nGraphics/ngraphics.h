@@ -83,5 +83,7 @@ void ngDrawPixel(int x, int y);
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h);
 void _ngDrawTriangle(dot p1, dot p2, dot p3);
 void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3);
+void ngDrawLine(GLuint x1, GLuint y1, GLuint x2, GLuint y2);
+void ngDrawSprite_GRAY(GLuint x, GLuint y, unsigned char* sprite, unsigned int size[2]);
 
 #endif /* ngraphics_h */

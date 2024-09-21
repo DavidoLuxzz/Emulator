@@ -64,6 +64,9 @@ void ngUISelectNext(void){
 void ngUISelectPrevious(void){
     __ngUIselectedEntry = (__ngUIselectedEntry-1)%__ngUIloadedPrograms;
 }
+unsigned int ngUIGetSelectedEntry(void){
+    return __ngUIselectedEntry;
+}
 
 void ngUIAddEntry(int id, const char* sname){
     ng_lde _s = {id, sname};

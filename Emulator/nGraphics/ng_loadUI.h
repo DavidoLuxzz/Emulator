@@ -19,6 +19,7 @@ void ngUIShow(void);
 void ngUIAddEntry(int id, const char* sname);
 void ngUISelectNext(void);
 void ngUISelectPrevious(void);
+unsigned int ngUIGetSelectedEntry(void);
 
 void ngUIDestroy(void);
 
