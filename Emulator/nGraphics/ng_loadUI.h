@@ -16,10 +16,12 @@ typedef struct NG_LOADER_ENTRY ng_lde;
 
 void ngUISetup(unsigned int w, unsigned int h, unsigned int maxprog);
 void ngUIShow(void);
-void ngUIAddEntry(int id, const char* sname);
+void ngUIAddEntry(const char* sname);
 void ngUISelectNext(void);
 void ngUISelectPrevious(void);
 unsigned int ngUIGetSelectedEntry(void);
+char* ngUIGetErrorMsg(void);
+void ngUIShowError(void);
 
 void ngUIDestroy(void);
 

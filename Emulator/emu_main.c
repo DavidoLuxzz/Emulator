@@ -3,7 +3,7 @@
 #include "nGraphics/ngraphics.h"
 
 #include "programs/prog.h"
-NGMAINLOOPFUNC EMU_ALL_PROG[] = {prog0_init,prog0_main, prog1_init,prog1_main};
+NGMAINLOOPFUNC EMU_ALL_PROG[] = {prog0_init,prog0_main, prog1_init,prog1_main, prog2_init,prog2_main};
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -16,6 +16,22 @@ const unsigned int HEIGHT = 600;
 _Bool emu_redraw = NG_TRUE;
 _Bool emu_progActive = NG_FALSE;
 int emu_progExitCode;
+
+void emu_after_prog(void);
+void emu_config(void){
+    if (ngGetKey(GLFW_KEY_ESCAPE)){
+        emu_redraw = NG_TRUE;
+        ngLockKey(GLFW_KEY_ESCAPE);
+        ngSetMainLoopFunction(emu_after_prog);
+        return;
+    }
+    if (1){
+        ngColor(0, 0, 0);
+        ngClear();
+        
+        emu_redraw = 0;
+    }
+}
 
 void emu_input(void){
     if (ngGetKey(GLFW_KEY_ENTER) || ngGetKey(GLFW_KEY_SPACE)){
@@ -32,6 +48,8 @@ void emu_input(void){
         ngLockKey(GLFW_KEY_DOWN); // lock key to prevent multiple clicks
     } else if (ngGetKey(GLFW_KEY_ESCAPE)) {
         ngPerformExit();
+    } else if (ngGetKey(GLFW_KEY_F1)){
+        ngSetMainLoopFunction(emu_config);
     }
 }
 
@@ -44,7 +62,10 @@ void emu_main(void){
         ngClear();
         ngColor(NG_LAZY_WHITE);
         
-        ngUIShow();
+        // ngUIShow();
+//        ngUIShowError();
+        GLint points[] = {100,100, 300,200, 100,300};
+        ngDrawLines(2, points, 1);
         
         emu_redraw = NG_FALSE;
     }
@@ -62,9 +83,10 @@ int main(){
     ngLoadOpenGL();
     ngSetupScreen();
     
-    ngUISetup(720, 376, 2);
-    ngUIAddEntry(0, "PONG (C)\0");
-    ngUIAddEntry(1, "PONG (asm)\0");
+    ngUISetup(720, 376, 3);
+    ngUIAddEntry("PONG (C)\0");
+    ngUIAddEntry("PONG (asm)\0");
+    ngUIAddEntry("Test program\0");
     
     emu_init();
     ngInitTextColoring(2); // max 2 color changes per text

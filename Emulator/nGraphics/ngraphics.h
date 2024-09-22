@@ -30,6 +30,7 @@
 #define NG_SHOW_FPS 0x8
 #define NG_TEXT_COLORING_DECLARED 0x9
 #define NG_UI_LOADED 0xa
+#define NG_PRINT_LOG 0xb
 
 #define NG_TRUE 0x1
 #define NG_FALSE 0x0
@@ -83,7 +84,9 @@ void ngDrawPixel(int x, int y);
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h);
 void _ngDrawTriangle(dot p1, dot p2, dot p3);
 void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3);
-void ngDrawLine(GLuint x1, GLuint y1, GLuint x2, GLuint y2);
+void ngDrawLine(GLint x1, GLint y1, GLint x2, GLint y2);
+void ngDrawLines(GLuint npoints, GLint* points, _Bool closeShape);
+
 void ngDrawSprite_GRAY(GLuint x, GLuint y, unsigned char* sprite, unsigned int size[2]);
 
 #endif /* ngraphics_h */

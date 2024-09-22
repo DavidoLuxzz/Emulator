@@ -15,6 +15,7 @@ unsigned int __ngUImaxPrograms;
 unsigned int __ngUIloadedPrograms;
 ng_lde* __ngUIentries;
 unsigned int __ngUIselectedEntry;
+char __ngUIcurrentErrorMsg[64];
 
 void ngUISetup(unsigned int w, unsigned int h, unsigned int maxPrograms){
     __ngUIwidth = w;
@@ -43,7 +44,7 @@ void ngUIShowEntryText(ng_lde* e){
 }
 void ngUIShow(void){
     ngDrawText(__ngUIx+20, 40, "EmuLoader v1.0.3 for Assembly", 29);
-    ngDrawText(__ngUIx+10, __ngUIy+__ngUIheight+40, "[F1] Quit    [ENTER] Select", 27);
+    ngDrawText(__ngUIx+10, __ngUIy+__ngUIheight+40, "[F1] Configurate    [ENTER] Select", 27);
     ngDrawText(5, __ngScreenHeight-20, "v1.0.3", 6);
     // -- BORDERS -- //
     // up-down
@@ -57,23 +58,35 @@ void ngUIShow(void){
         ngUIShowEntryText(__ngUIentries+i);
     }
 }
+void ngUIShowError(void){
+    ngDrawText(5, 5, __ngUIcurrentErrorMsg, strlen(__ngUIcurrentErrorMsg));
+}
 
 void ngUISelectNext(void){
-    __ngUIselectedEntry = (__ngUIselectedEntry+1)%__ngUIloadedPrograms;
+    if (__ngUIselectedEntry+1<__ngUIloadedPrograms) __ngUIselectedEntry+=1;
 }
 void ngUISelectPrevious(void){
-    __ngUIselectedEntry = (__ngUIselectedEntry-1)%__ngUIloadedPrograms;
+    if (__ngUIselectedEntry!=0)__ngUIselectedEntry-=1;
 }
 unsigned int ngUIGetSelectedEntry(void){
     return __ngUIselectedEntry;
 }
 
-void ngUIAddEntry(int id, const char* sname){
-    ng_lde _s = {id, sname};
-    *(__ngUIentries+id) = _s;
-    __ngUIloadedPrograms = max(id, __ngUIloadedPrograms)+1;
+void ngUIAddEntry(const char* sname){
+    if (__ngUIloadedPrograms >= __ngUImaxPrograms){
+        strcpy(__ngUIcurrentErrorMsg, "ERROR: tried to add entry, but there was no space left");
+        if (__ngflags[NG_PRINT_LOG])
+            fprintf(stderr, "%s\n", __ngUIcurrentErrorMsg);
+        return;
+    }
+        ng_lde _s = {__ngUIloadedPrograms, sname};
+        *(__ngUIentries+__ngUIloadedPrograms) = _s;
+        __ngUIloadedPrograms += 1;
 }
 
+char* ngUIGetErrorMsg(void){
+    return __ngUIcurrentErrorMsg;
+}
 
 void ngUIDestroy(void){
     free(__ngUIentries);

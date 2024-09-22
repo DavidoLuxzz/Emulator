@@ -220,10 +220,18 @@ void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3)
     _ngDrawTriangle(p1, p2, p3);
 }
 // x bigger
-void _ngDrawLineXb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
+void _ngDrawLineXb(int x1, int y1, int x2, int y2){
     int m_new = 2 * (y2 - y1);
-    int slope_error_new = m_new - (x2 - x1);
-    for (int x = x1, y = y1; x <= x2; x++) {
+    int slope_error_new = m_new - abs(x2 - x1);
+    int w = x2-x1;
+    int aw = abs(w);
+    int inc, incy;
+    if (w<0) inc = -1;
+    else inc = 1;
+    if (y2-y1 < 0) incy=-1;
+    else incy = 1;
+    int x = x1, y = y1;
+    for (int i=0; i <= aw; i++) {
         ngDrawPixel(x, y);
   
         // Add slope to increment angle formed
@@ -232,16 +240,25 @@ void _ngDrawLineXb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
         // Slope error reached limit, time to
         // increment y and update slope error.
         if (slope_error_new >= 0) {
-            y++;
-            slope_error_new -= 2 * (x2 - x1);
+            y+=incy;
+            slope_error_new -= 2 * abs(x2 - x1);
         }
+        x+=inc;
     }
 }
 // y bigger
-void _ngDrawLineYb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
+void _ngDrawLineYb(int x1, int y1, int x2, int y2){
     int m_new = 2 * (x2 - x1);
-    int slope_error_new = m_new - (y2 - y1);
-    for (int x = x1, y = y1; y <= y2; y++) {
+    int slope_error_new = m_new - abs(y2 - y1);
+    int h = y2-y1;
+    int ah = abs(h);
+    int inc, incx;
+    if (h<0) inc = -1;
+    else inc = 1;
+    if (x2-x1 < 0) incx=-1;
+    else incx = 1;
+    int x = x1, y = y1;
+    for (int i=0; i <= ah; i++) {
         ngDrawPixel(x, y);
   
         // Add slope to increment angle formed
@@ -250,16 +267,27 @@ void _ngDrawLineYb(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
         // Slope error reached limit, time to
         // increment y and update slope error.
         if (slope_error_new >= 0) {
-            x++;
-            slope_error_new -= 2 * (y2 - y1);
+            x+=incx;
+            slope_error_new -= 2 * abs(y2 - y1);
         }
+        y+=inc;
     }
 }
-void ngDrawLine(GLuint x1, GLuint y1, GLuint x2, GLuint y2){
-    GLuint w = x2-x1;
-    GLuint h = y2-y1;
+void ngDrawLine(GLint x1, GLint y1, GLint x2, GLint y2){
+//    printf("%d %d %d %d\n",x1,y1,x2,y2);
+    GLint w = abs(x2-x1);
+    GLint h = abs(y2-y1);
     if (w>h) _ngDrawLineXb(x1, y1, x2, y2);
     else _ngDrawLineYb(x1, y1, x2, y2);
+}
+
+void ngDrawLines(GLuint nlines, GLint points[], _Bool closeShape){
+    if (nlines < 1) return;
+    GLuint i;
+    for (i=0; i<nlines; i++){
+        ngDrawLine(points[2*i], points[2*i+1], points[2*i+2], points[2*i+3]);
+    }
+    if (closeShape) ngDrawLine(points[2*i], points[2*i+1], points[0], points[1]);
 }
 
 void ngDrawSprite_GRAY(GLuint x, GLuint y, GLubyte* sprite, unsigned int sinfo[5]){
