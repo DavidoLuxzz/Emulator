@@ -3,7 +3,7 @@
 #include "nGraphics/ngraphics.h"
 
 #include "programs/prog.h"
-NGMAINLOOPFUNC EMU_ALL_PROG[] = {prog0_init,prog0_main, prog1_init,prog1_main, prog2_init,prog2_main};
+NGMAINLOOPFUNC EMU_ALL_PROG[] = {prog0_init,prog0_main, prog1_init,prog1_main, prog2_init,prog2_main, prog3_init,prog3_main};
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -62,10 +62,8 @@ void emu_main(void){
         ngClear();
         ngColor(NG_LAZY_WHITE);
         
-        // ngUIShow();
+        ngUIShow();
 //        ngUIShowError();
-        GLint points[] = {100,100, 300,200, 100,300};
-        ngDrawLines(2, points, 1);
         
         emu_redraw = NG_FALSE;
     }
@@ -83,14 +81,18 @@ int main(){
     ngLoadOpenGL();
     ngSetupScreen();
     
-    ngUISetup(720, 376, 3);
+    ngConfig(NG_PRINT_LOG, NG_TRUE);
+    
+    ngUISetup(720, 376, 4);
     ngUIAddEntry("PONG (C)\0");
     ngUIAddEntry("PONG (asm)\0");
     ngUIAddEntry("Test program\0");
+    ngUIAddEntry("3D test program\0");
     
     emu_init();
     ngInitTextColoring(2); // max 2 color changes per text
-    ngSetMainLoopFunction(emu_main);
+    prog3_init();
+    ngSetMainLoopFunction(prog3_main);
     ngMainLoop();
     
     ngUIDestroy();

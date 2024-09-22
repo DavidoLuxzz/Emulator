@@ -21,4 +21,8 @@ extern void prog1_main(void);
 extern void prog2_init(void);
 extern void prog2_main(void);
 
+// 3d test
+extern void prog3_init(void);
+extern void prog3_main(void);
+
 #endif /* prog0_h */

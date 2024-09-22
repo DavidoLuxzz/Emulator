@@ -139,6 +139,10 @@ void ngTextKerning(GLint kern){
 }
 
 GLintptr _ngPosition(int x, int y){
+    if (!__ngflags[NG_VIEW_OUT_SCREEN]){
+        if (x<0 || x>__ngScreenWidth-1) return 0;
+        if (y<0 || y>__ngScreenHeight-1) return 0;
+    }
     GLintptr xpos, ypos, pos;
     
     if (__ngFlipHorizontaly) xpos = __ngScreenWidth - x;
@@ -173,7 +177,7 @@ void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h){
         }
     }
 }
-_Bool _ptInTriangle(dot p, dot p0, dot p1, dot p2){
+_Bool _ptInTriangle(NG_DOT p, NG_DOT p0, NG_DOT p1, NG_DOT p2){
     int A = ( 1.0f/2.0f * (-p1.y * p2.x + p0.y*(-p1.x + p2.x) + p0.x*(p1.y - p2.y) + p1.x * p2.y) );
     int sign = A<0 ? -1:1;
     int s = (p0.y * p2.x - p0.x * p2.y + (p2.y-p0.y)*p.x + (p0.x-p2.x)*p.y) * sign;
@@ -184,25 +188,25 @@ _Bool _ptInTriangle(dot p, dot p0, dot p1, dot p2){
 int min(int a, int b) { if (a<b) return a; return b; }
 int max(int a, int b) { if (a>b) return a; return b; }
 
-dot minp(dot p1,dot p2,dot p3){
-    dot _min;
+NG_DOT minp(NG_DOT p1,NG_DOT p2,NG_DOT p3){
+    NG_DOT _min;
     _min.x = min(min(p1.x, p2.x), p3.x);
     _min.y = min(min(p1.y, p2.y), p3.y);
     return _min;
 }
-dot maxp(dot p1,dot p2,dot p3){
-    dot _max;
+NG_DOT maxp(NG_DOT p1,NG_DOT p2,NG_DOT p3){
+    NG_DOT _max;
     _max.x = max(max(p1.x, p2.x), p3.x);
     _max.y = max(max(p1.y, p2.y), p3.y);
     return _max;
 }
-void _ngDrawTriangle(dot p1, dot p2, dot p3){
-    dot bounds[2] = {minp(p1, p2, p3), maxp(p1, p2, p3)};
+void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3){
+    NG_DOT bounds[2] = {minp(p1, p2, p3), maxp(p1, p2, p3)};
     int _x0 = bounds[0].x;
     int _y0 = bounds[0].y;
     int _rw = bounds[1].x-bounds[0].x;
     int _rh = bounds[1].y-bounds[0].y;
-    dot p;
+    NG_DOT p;
     for (int y=0; y<_rh; y++){
         for (int x=0; x<_rw; x++){
             p.x = _x0+x;
@@ -214,14 +218,24 @@ void _ngDrawTriangle(dot p1, dot p2, dot p3){
     }
 }
 void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3){
-    dot p1 = {x1,y1};
-    dot p2 = {x2,y2};
-    dot p3 = {x3,y3};
+    NG_DOT p1 = {x1,y1};
+    NG_DOT p2 = {x2,y2};
+    NG_DOT p3 = {x3,y3};
     _ngDrawTriangle(p1, p2, p3);
+}
+
+void ngDrawQuad2D(NG_POINT points[4], int type){
+    if (type == NG_TRIANGLE_FAN){
+        _ngDrawTriangle(points[0], points[1], points[2]);
+        _ngDrawTriangle(points[0], points[2], points[3]);
+    } else if (type == NG_TRIANGLE_Z){
+        _ngDrawTriangle(points[0], points[1], points[3]);
+        _ngDrawTriangle(points[0], points[3], points[2]);
+    }
 }
 // x bigger
 void _ngDrawLineXb(int x1, int y1, int x2, int y2){
-    int m_new = 2 * (y2 - y1);
+    int m_new = 2 * abs(y2 - y1);
     int slope_error_new = m_new - abs(x2 - x1);
     int w = x2-x1;
     int aw = abs(w);
@@ -248,7 +262,7 @@ void _ngDrawLineXb(int x1, int y1, int x2, int y2){
 }
 // y bigger
 void _ngDrawLineYb(int x1, int y1, int x2, int y2){
-    int m_new = 2 * (x2 - x1);
+    int m_new = 2 * abs(x2 - x1);
     int slope_error_new = m_new - abs(y2 - y1);
     int h = y2-y1;
     int ah = abs(h);

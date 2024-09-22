@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		A14F31CB2C9D917B008FC5E6 /* prog0asm.o in Frameworks */ = {isa = PBXBuildFile; fileRef = A14F31CA2C9D917B008FC5E6 /* prog0asm.o */; };
 		A158E7082C981BE9002D5A60 /* _ng_font1.c in Sources */ = {isa = PBXBuildFile; fileRef = A158E7072C981BE9002D5A60 /* _ng_font1.c */; };
+		A187D5162CA0308A00DF9C91 /* gm.c in Sources */ = {isa = PBXBuildFile; fileRef = A187D5152CA0308A00DF9C91 /* gm.c */; };
+		A187D5192CA0328100DF9C91 /* test3D.c in Sources */ = {isa = PBXBuildFile; fileRef = A187D5182CA0328100DF9C91 /* test3D.c */; };
 		A18E30042C9F4B3B00CBF85F /* prog0.c in Sources */ = {isa = PBXBuildFile; fileRef = A19534F22C9A0EA2005751E8 /* prog0.c */; };
 		A18E30092C9F4D6200CBF85F /* SHEEP0.o in Frameworks */ = {isa = PBXBuildFile; fileRef = A18E30072C9F4D6200CBF85F /* SHEEP0.o */; };
 		A1B635982C975D4E00E84AD7 /* libglfw.3.3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = A1B635972C975D4E00E84AD7 /* libglfw.3.3.dylib */; };
@@ -54,6 +56,9 @@
 		A14F31CA2C9D917B008FC5E6 /* prog0asm.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = prog0asm.o; sourceTree = "<group>"; };
 		A14F31CC2C9D9366008FC5E6 /* emu_asm.s */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.asm; path = emu_asm.s; sourceTree = "<group>"; };
 		A158E7072C981BE9002D5A60 /* _ng_font1.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _ng_font1.c; sourceTree = "<group>"; };
+		A187D5142CA0308A00DF9C91 /* gm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = gm.h; sourceTree = "<group>"; };
+		A187D5152CA0308A00DF9C91 /* gm.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = gm.c; sourceTree = "<group>"; };
+		A187D5182CA0328100DF9C91 /* test3D.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = test3D.c; sourceTree = "<group>"; };
 		A18E30062C9F4D6200CBF85F /* SHEEP0.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = SHEEP0.s; sourceTree = "<group>"; };
 		A18E30072C9F4D6200CBF85F /* SHEEP0.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = SHEEP0.o; sourceTree = "<group>"; };
 		A19534F12C9A0EA2005751E8 /* prog.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = prog.h; sourceTree = "<group>"; };
@@ -96,6 +101,23 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A187D5132CA0306A00DF9C91 /* gmath3 */ = {
+			isa = PBXGroup;
+			children = (
+				A187D5142CA0308A00DF9C91 /* gm.h */,
+				A187D5152CA0308A00DF9C91 /* gm.c */,
+			);
+			path = gmath3;
+			sourceTree = "<group>";
+		};
+		A187D5172CA0326000DF9C91 /* prog3 */ = {
+			isa = PBXGroup;
+			children = (
+				A187D5182CA0328100DF9C91 /* test3D.c */,
+			);
+			path = prog3;
+			sourceTree = "<group>";
+		};
 		A18E30022C9F4AAB00CBF85F /* prog1 */ = {
 			isa = PBXGroup;
 			children = (
@@ -128,6 +150,7 @@
 				A18E30052C9F4B7400CBF85F /* prog0 */,
 				A18E30022C9F4AAB00CBF85F /* prog1 */,
 				A18E30032C9F4B0E00CBF85F /* prog2 */,
+				A187D5172CA0326000DF9C91 /* prog3 */,
 				A19534F12C9A0EA2005751E8 /* prog.h */,
 			);
 			path = programs;
@@ -177,6 +200,7 @@
 		A1FEAE3F2C943661004EA125 /* Emulator */ = {
 			isa = PBXGroup;
 			children = (
+				A187D5132CA0306A00DF9C91 /* gmath3 */,
 				A19534F02C99EF27005751E8 /* programs */,
 				A1B6359A2C975DA700E84AD7 /* nGraphics */,
 				A1FEAE402C943661004EA125 /* emu_main.c */,
@@ -257,12 +281,14 @@
 				A1B635A92C975DA700E84AD7 /* ngraphics.c in Sources */,
 				A18E30042C9F4B3B00CBF85F /* prog0.c in Sources */,
 				A1B635AB2C975DA700E84AD7 /* ng_font.c in Sources */,
+				A187D5192CA0328100DF9C91 /* test3D.c in Sources */,
 				A1B635A82C975DA700E84AD7 /* ng_window.c in Sources */,
 				A1B635AE2C975DA700E84AD7 /* ng_shaders.c in Sources */,
 				A158E7082C981BE9002D5A60 /* _ng_font1.c in Sources */,
 				A1B635AC2C975DA700E84AD7 /* ng_gl.c in Sources */,
 				A1B635AA2C975DA700E84AD7 /* ng_texture.c in Sources */,
 				A1FEAE412C943661004EA125 /* emu_main.c in Sources */,
+				A187D5162CA0308A00DF9C91 /* gm.c in Sources */,
 				A1B635AD2C975DA700E84AD7 /* glad.c in Sources */,
 				A1F06C392C99E85600A7A979 /* ng_loadUI.c in Sources */,
 			);

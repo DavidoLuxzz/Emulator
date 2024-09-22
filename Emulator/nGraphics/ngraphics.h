@@ -31,6 +31,7 @@
 #define NG_TEXT_COLORING_DECLARED 0x9
 #define NG_UI_LOADED 0xa
 #define NG_PRINT_LOG 0xb
+#define NG_VIEW_OUT_SCREEN 0xc
 
 #define NG_TRUE 0x1
 #define NG_FALSE 0x0
@@ -60,14 +61,17 @@ int ngGet(int);
 
 // ------ DRAWING ------- //
 #define NG_LAZY_WHITE 200,200,200
+
+#define NG_TRIANGLE_Z 0x0
+#define NG_TRIANGLE_FAN 0x1
 // drawing variables
 extern GLubyte __ngColor[];
 extern GLuint __ngFontScale;
 extern GLint __ngTextKerning;
 
-struct point { int x,y; };
-typedef struct point point;
-typedef struct point dot;
+struct NG_POINT { int x,y; };
+typedef struct NG_POINT NG_POINT;
+typedef struct NG_POINT NG_DOT;
 // and functions for them
 GLintptr _ngPosition(int x, int y);
 void ngFontScale(GLuint);
@@ -75,15 +79,16 @@ void ngTextKerning(GLint kern);
 void ngColor(GLubyte, GLubyte, GLubyte);
 int min(int a, int b);
 int max(int a, int b);
-dot minp(dot p1,dot p2,dot p3);
-dot maxp(dot p1,dot p2,dot p3);
-_Bool _ptInTriangle(dot p, dot p0, dot p1, dot p2);
+NG_DOT minp(NG_DOT p1,NG_DOT p2,NG_DOT p3);
+NG_DOT maxp(NG_DOT p1,NG_DOT p2,NG_DOT p3);
+_Bool _ptInTriangle(NG_DOT p, NG_DOT p0, NG_DOT p1, NG_DOT p2);
 // drawing operations
 void ngClear(void);
 void ngDrawPixel(int x, int y);
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h);
-void _ngDrawTriangle(dot p1, dot p2, dot p3);
+void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3);
 void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3);
+void ngDrawQuad2D(NG_POINT points[4], int type);
 void ngDrawLine(GLint x1, GLint y1, GLint x2, GLint y2);
 void ngDrawLines(GLuint npoints, GLint* points, _Bool closeShape);
 
