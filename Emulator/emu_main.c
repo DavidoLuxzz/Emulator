@@ -81,6 +81,9 @@ int main(){
     ngLoadOpenGL();
     ngSetupScreen();
     
+    // Experimental
+    ngConfig(NG_ALL_GRAY, NG_TRUE);
+    ngConfig(NG_SHOW_FPS, NG_TRUE);
     ngConfig(NG_PRINT_LOG, NG_TRUE);
     
     ngUISetup(720, 376, 4);

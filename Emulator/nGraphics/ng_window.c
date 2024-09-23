@@ -9,6 +9,7 @@
 #include "ngraphics.h"
 
 GLFWwindow* __ngWindow = NULL;
+unsigned int __ngMousePosX, __ngMousePosY;
 _Bool __ngKeyLocks[GLFW_KEY_LAST] = {0};
 
 void ngCreateWindow(int width, int height, const char* title){
@@ -54,6 +55,19 @@ void ngSwapBuffers(void){
 }
 void ngPollEvents(void){
     glfwPollEvents();
+}
+
+int ngGetMousePosX(void){
+    return __ngMousePosX;
+}
+int ngGetMousePosY(void){
+    return __ngMousePosY;
+}
+void ngUpdateMousePos(void){
+    double mx,my;
+    glfwGetCursorPos(__ngWindow, &mx, &my);
+    __ngMousePosX = (int) mx;
+    __ngMousePosY = (int) my;
 }
 
 int ngGetKey(int key){

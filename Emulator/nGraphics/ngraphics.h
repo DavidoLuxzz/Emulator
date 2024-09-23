@@ -32,6 +32,7 @@
 #define NG_UI_LOADED 0xa
 #define NG_PRINT_LOG 0xb
 #define NG_VIEW_OUT_SCREEN 0xc
+#define NG_ALL_GRAY 0xd
 
 #define NG_TRUE 0x1
 #define NG_FALSE 0x0
@@ -87,11 +88,15 @@ void ngClear(void);
 void ngDrawPixel(int x, int y);
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h);
 void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3);
-void ngDrawTriangle(GLuint x1,GLuint y1,GLuint x2,GLuint y2,GLuint x3,GLuint y3);
+void ngDrawTriangle(GLint x1,GLint y1,GLint x2,GLint y2,GLint x3,GLint y3);
 void ngDrawQuad2D(NG_POINT points[4], int type);
 void ngDrawLine(GLint x1, GLint y1, GLint x2, GLint y2);
 void ngDrawLines(GLuint npoints, GLint* points, _Bool closeShape);
 
 void ngDrawSprite_GRAY(GLuint x, GLuint y, unsigned char* sprite, unsigned int size[2]);
+
+void _lukaDrawTriangle(NG_POINT points[3]);
+void lukaDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3);
+void lukaDrawQuad2D(NG_POINT points[4], int type);
 
 #endif /* ngraphics_h */
