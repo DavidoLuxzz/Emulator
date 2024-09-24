@@ -23,6 +23,7 @@ int mousex, mousey;
 void prog3_init(void){
     redrawa = NG_TRUE;
     gm_ortho((float)__ngScreenWidth/2.0, (float)__ngScreenHeight/2.0, (float)__ngScreenWidth*tanf((float)PROG3_FOV/2.0)/2.0, 1000.0);
+    gm_set_clip_z(50.0f);
     prog3_camera = gm_camera(0.0, -100.0, 0.0);
     ngUpdateMousePos();
     mousex = ngGetMousePosX();
@@ -71,27 +72,40 @@ void prog3_main(void){
         ngColor(0, 0, 0);
         ngClear();
         ngColor(100, 100, 100);
-        struct gm_dot dots[4] = {240.0,160.0,200.0, 720.0,160.0,200.0, 720.0,480.0,200.0, 240.0,480.0,200.0};
-        struct gm_dot2 sdots[4];
+        struct gm_Quad dots = {.dots={ {240.0,160.0,200.0}, {720.0,160.0,200.0}, {720.0,480.0,200.0}, {240.0,480.0,200.0} } };
+//        struct gm_dot2 sdots[4];
+//
+//        sdots[0] = gm_screen_dot(dots[0]);
+//        sdots[1] = gm_screen_dot(dots[1]);
+//        sdots[2] = gm_screen_dot(dots[2]);
+//        sdots[3] = gm_screen_dot(dots[3]);
         
-        sdots[0] = gm_screen_dot(dots[0]);
-        sdots[1] = gm_screen_dot(dots[1]);
-        sdots[2] = gm_screen_dot(dots[2]);
-        sdots[3] = gm_screen_dot(dots[3]);
+        struct gm_Quad2D sq = gm_screen_quad(&dots);
         
-        NG_POINT points[4];
-        for (int i=0; i<4; i++){
-            points[i].x = (int) sdots[i].x;
-            points[i].y = (int) sdots[i].y;
+        if (gmGet(GM_OBJECT_VISIBLE)){
+            NG_POINT points[4];
+            for (int i=0; i<4; i++){
+                points[i].x = (int) sq.dots[i].x;
+                points[i].y = (int) sq.dots[i].y;
+            }
+            // ngDrawLines(3, points, 1);
+            //        ngDrawQuad2D(points, NG_TRIANGLE_FAN);
+            //        _lukaDrawTriangle(points);
+            
+            //        ngColor(100, 50, 50);
+            //        lukaDrawTriangle(points[0], points[3], points[2]);
+            //        ngColor(NG_LAZY_WHITE);
+            //        lukaDrawTriangle(points[0], points[1], points[2]);
+            
+            sofDrawQuad2D(points, NG_TRIANGLE_FAN);
         }
-        // ngDrawLines(3, points, 1);
-//        ngDrawQuad2D(points, NG_TRIANGLE_FAN);
-        lukaDrawQuad2D(points, NG_TRIANGLE_FAN);
         
 //        NG_POINT tpoints[3] = {{0,0},{1024,0},{0,600}};
 //        NG_POINT tpoints2[3] = {{0,600},{1024,600},{1024,0}};
 //        _lukaDrawTriangle(tpoints);
 //        _lukaDrawTriangle(tpoints2);
+        
+//        _sofDrawTriangle(tpoints);
 //        redrawa = 0;
     }
 }

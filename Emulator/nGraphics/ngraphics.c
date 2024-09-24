@@ -226,9 +226,30 @@ NG_DOT maxp(NG_DOT p1,NG_DOT p2,NG_DOT p3){
     _max.y = max(max(p1.y, p2.y), p3.y);
     return _max;
 }
+
+NG_DOT _minp(NG_DOT p[3]){
+    return minp(p[0], p[1], p[2]);
+}
+NG_DOT _maxp(NG_DOT p[3]){
+    return maxp(p[0], p[1], p[2]);
+}
+
+NG_POINT _minp2(NG_POINT p1, NG_POINT p2){
+    int x = min(p1.x, p2.x);
+    int y = min(p1.y, p2.y);
+    NG_POINT ret = {x, y};
+    return ret;
+}
+NG_POINT _maxp2(NG_POINT p1, NG_POINT p2){
+    int x = max(p1.x, p2.x);
+    int y = max(p1.y, p2.y);
+    NG_POINT ret = {x, y};
+    return ret;
+}
 /**
  * Crta trougao odredjen sa tri tacke
  * Sto veci trougao to sporije crta, crtanje optimizovano koliko moze. Racunanje pravi problem...
+ * Algoritam prespor
  */
 void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3){
     NG_DOT bounds[2] = {minp(p1, p2, p3), maxp(p1, p2, p3)};
@@ -398,8 +419,7 @@ int maxxp2(NG_POINT p[3], int del){
         if (p[i0].y < p[i1].y) return i0;
     return i1;
 }
-void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, int duz[]){
-    duz[0] = p1.x;
+void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, NG_DINT v[], const int ymin, const int ymax){
     int x1 = p1.x;
     int y1 = p1.y;
     int x2 = p2.x;
@@ -418,6 +438,12 @@ void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, int duz[]){
         else incy = 1;
         int x = x1, y = y1;
         for (int i=0; i <= aw; i++) {
+            if (y >= ymin && y<ymax && i<(ymax-ymin)){
+                if (x < v[i].x1)
+                    v[i].x1 = x;
+                if (x > v[i].x2)
+                    v[i].x2 = x;
+            }
             // Add slope to increment angle formed
             slope_error_new += m_new;
             
@@ -425,7 +451,6 @@ void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, int duz[]){
             // increment y and update slope error.
             if (slope_error_new >= 0) {
                 y+=incy;
-                duz[abs(y-y1)] = x;
                 slope_error_new -= 2 * abs(x2 - x1);
             }
             x+=inc;
@@ -441,7 +466,14 @@ void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, int duz[]){
         if (x2-x1 < 0) incx=-1;
         else incx = 1;
         int x = x1, y = y1;
-        for (int i=0; i <= ah; i++) {
+        for (int j=0; j <= ah; j++) {
+            if (y >= ymin && y<ymax) {
+                int i = abs(y-ymin);
+                if (x < v[i].x1)
+                    v[i].x1 = x;
+                if (x > v[i].x2)
+                    v[i].x2 = x;
+            }
             // Add slope to increment angle formed
             slope_error_new += m_new;
       
@@ -452,45 +484,34 @@ void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, int duz[]){
                 slope_error_new -= 2 * abs(y2 - y1);
             }
             y+=inc;
-            duz[abs(y)-y1] = x;
         }
     }
 }
+void _lukaDrawHBlock(int x1, int x2, int y){
+    for (int x=x1; x<x2; x++) ngDrawPixel(x, y);
+}
 void _lukaDrawTriangle(NG_POINT points[3]){
-    int _p1i = minyp(points);
-    int _p3i = maxxp2(points, _p1i);
-    int _h2i = maxyp(points, _p1i);
-    int _hfi = 3-_p1i-_h2i;
-    int _p2i = 3-_p1i-_p3i;
-    NG_POINT p1 = points[_p1i];
-    NG_POINT p2 = points[_p2i];
-    NG_POINT p3 = points[_p3i];
+    const int _pminy = min(max(minp(points[0], points[1], points[2]).y, 0), __ngScreenHeight);
+    const int _pmaxy = max(min(maxp(points[0], points[1], points[2]).y, __ngScreenHeight), 0);
+    const int H = _pmaxy - _pminy;
+    if (H<=0){
+        printf("[WARN] H <= 0;  not drawing triangle\n");
+        return;
+    }
+    ng_dint v[H];
+    const ng_dint vnull = {__ngScreenWidth-1, 0};
+    for (int _i=0; _i<H; _i++) v[_i] = vnull;
     
-    int size12 = abs(p2.y-p1.y) + 1;
-    int size23 = abs(p3.y-p2.y) + 1;
-    int size13 = abs(p3.y-p1.y) + 1;
+    _lukaTriangCalcMinxs(points[0], points[1], v, _pminy, _pmaxy);
+    _lukaTriangCalcMinxs(points[1], points[2], v, _pminy, _pmaxy);
+    _lukaTriangCalcMinxs(points[0], points[2], v, _pminy, _pmaxy);
     
-    int duz12[size12];
-    int duz23[size23];
-    int duz13[size13];
-    _lukaTriangCalcMinxs(p1, p2, duz12);
-    _lukaTriangCalcMinxs(p3, p2, duz23);
-    _lukaTriangCalcMinxs(p1, p3, duz13);
-    
-    NG_POINT _pmax = maxp(p1, p2, p3);
-    int halfy = points[_hfi].y;
-    for (int y=max(p1.y,0); y<min(_pmax.y, __ngScreenHeight); y++){
-        int i1 = y-p1.y;
-        if (y<halfy){
-            int _imin = min(duz12[i1], duz13[i1]);
-            int _imax = max(duz12[i1], duz13[i1]);
-            for (int i=max(_imin, 0); i<min(_imax, __ngScreenWidth); i++) ngDrawPixel(i, y);
-        } else {
-            int i2 = y-halfy;
-            int _imin = min(duz12[i1], duz23[i2]);
-            int _imax = max(duz12[i1], duz23[i2]);
-            for (int i=max(_imin, 0); i<min(_imax, __ngScreenWidth); i++) ngDrawPixel(i, y);
-        }
+    for (int y=_pminy; y<_pmaxy; y++){
+        int x1 = v[y-_pminy].x1;
+        int x2 = v[y-_pminy].x2;
+//        ngDrawPixel(x1, y);
+//        ngDrawPixel(x2, y);
+        _lukaDrawHBlock(x1, x2, y);
     }
 }
 
@@ -506,5 +527,80 @@ void lukaDrawQuad2D(NG_POINT points[4], int type){
     } else if (type == NG_TRIANGLE_Z){
         lukaDrawTriangle(points[0], points[1], points[3]);
         lukaDrawTriangle(points[0], points[3], points[2]);
+    }
+}
+
+
+
+// ---- Drugi pokusaj crtanja trougla ---- //
+// Scanline
+
+int _fnGetX(int yline, int yfn, float k){
+    return (int) ((float)(yline-yfn) / k);
+}
+
+void _fnCalculate(NG_POINT p1, NG_POINT p2, ng_fn* fn){
+    float _k = 1.0f;
+    int _n, x0=0;
+    if (p2.x - p1.x != 0) {
+        _k = (float)(p2.y-p1.y)/(float)(p2.x-p1.x);
+        _n = p1.y - (int)(_k*(float)p1.x);
+    } else {
+        x0 = 1;
+        _n = p1.x;
+    }
+    
+    fn->k = _k;
+    fn->n = _n;
+    fn->xIs0 = x0;
+}
+
+void _sofDrawfn(ng_fn* fn, NG_POINT bounds[2]){
+    if (fn->k == 0.0f){
+        if (fn->n>=bounds[0].y && fn->n<=bounds[1].y)
+            for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
+        return;
+    }
+    if (fn->xIs0){
+        if (fn->n>=bounds[0].x && fn->n<=bounds[1].x)
+            for (int y=bounds[0].y; y<bounds[1].y; y++) ngDrawPixel(fn->n, y);
+        return;
+    }
+    for (int y=bounds[0].y; y<bounds[1].y; y++){
+        int x = (int)((float)(y-fn->n) / fn->k);
+        if (x>=bounds[0].x && x<=bounds[1].x){
+            ngDrawPixel(x, y);
+            ngDrawPixel(x+1, y); // izbrisati
+        }
+    }
+}
+
+void _sofDrawTriangle(NG_POINT points[3]){
+    ng_fn sides[3];
+    _fnCalculate(points[0], points[1], &sides[0]); // sides[0] - (p1, p2)
+    _fnCalculate(points[1], points[2], &sides[1]); // sides[1] - (p2, p3)
+    _fnCalculate(points[0], points[2], &sides[2]); // sides[2] - (p1, p3)
+    
+    NG_POINT bounds12[2] = { _minp2(points[0], points[1]), _maxp2(points[0], points[1]) };
+    NG_POINT bounds23[2] = { _minp2(points[1], points[2]), _maxp2(points[1], points[2]) };
+    NG_POINT bounds13[2] = { _minp2(points[0], points[2]), _maxp2(points[0], points[2]) };
+    
+    _sofDrawfn(&sides[0], bounds12);
+    _sofDrawfn(&sides[1], bounds23);
+    _sofDrawfn(&sides[2], bounds13);
+}
+
+void sofDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
+    NG_POINT points[3] = {_d1, _d2, _d3};
+    _sofDrawTriangle(points);
+}
+
+void sofDrawQuad2D(NG_POINT points[4], int type){
+    if (type == NG_TRIANGLE_FAN){
+        sofDrawTriangle(points[0], points[1], points[2]);
+        sofDrawTriangle(points[0], points[2], points[3]);
+    } else if (type == NG_TRIANGLE_Z){
+        sofDrawTriangle(points[0], points[1], points[3]);
+        sofDrawTriangle(points[0], points[3], points[2]);
     }
 }

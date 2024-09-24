@@ -14,9 +14,18 @@
 float gmZnear, gmZfar;
 float gmCenterX, gmCenterY;
 struct gm_Camera gmCamera;
+float gmClipZ;
 
 float sign1f(float a){
     return (float)a>0.0;
+}
+
+int __gmflags[GM_NUM_FLAGS];
+int gmGet(int flag){
+    return __gmflags[flag];
+}
+void gmResetFlags(void){
+    for (int i=0; i<GM_NUM_FLAGS; i++) __gmflags[i] = 0;
 }
 
 struct gm_dot gm_rotate_vector(struct gm_dot a, float angle, int axis){
@@ -53,21 +62,45 @@ struct gm_dot gm_transformR(struct gm_dot a){
 struct gm_dot2 gm_screen_dot(struct gm_dot t){
     struct gm_dot d = gm_transformR(t);
     struct gm_dot2 S;
+    if (d.z < gmClipZ) {
+        __gmflags[GM_POINT_VISIBLE] = 0;
+        __gmflags[GM_POINT2D_VISIBLE] = 0;
+    }
+    else {
+        __gmflags[GM_POINT_VISIBLE] = 1;
+        __gmflags[GM_POINT2D_VISIBLE] = 1;
+    }
     if (d.z <= 0.0){
         S.x = d.x*gmZnear/1.0 + gmCenterX;
         S.y = d.y*gmZnear/1.0 + gmCenterY;
     } else {
         S.x = d.x*gmZnear/d.z + gmCenterX;
         S.y = d.y*gmZnear/d.z + gmCenterY;
+        if (S.x>=0 && S.x<2*gmCenterX &&
+            S.y>=0 && S.y<2*gmCenterY)
+                __gmflags[GM_POINT2D_VISIBLE] = 1;
+        else __gmflags[GM_POINT2D_VISIBLE] = 0;
     }
     return S;
 }
 
+struct gm_Triang2D gm_screen_triangle(struct gm_dot p1, struct gm_dot p2, struct gm_dot p3){
+    struct gm_Triang2D ret = {.dots = {0}};
+    ret.dots[0] = gm_screen_dot(p1);
+    ret.dots[1] = gm_screen_dot(p2);
+    ret.dots[2] = gm_screen_dot(p3);
+    return ret;
+}
+
 struct gm_Quad2D gm_screen_quad(struct gm_Quad *q){
     struct gm_Quad2D ret = {.dots = {0}};
+    int vres = 0;
     for (int i=0; i<4; i++){
         ret.dots[i] = gm_screen_dot(q->dots[i]);
+        vres += __gmflags[GM_POINT_VISIBLE] & __gmflags[GM_POINT2D_VISIBLE];
     }
+    if (vres > 1) __gmflags[GM_OBJECT_VISIBLE] = 1;
+    else __gmflags[GM_OBJECT_VISIBLE] = 0;
     return ret;
 }
 struct gm_Quadf2D gm_screen_quadf(struct gm_Quad *q){
@@ -85,6 +118,10 @@ void gm_ortho(float cx, float cy, float znear, float zfar){
     gmCenterY = cy;
     gmZnear = znear;
     gmZfar = zfar;
+    gmClipZ = znear/8.0f;
+}
+void gm_set_clip_z(float clip){
+    gmClipZ = clip;
 }
 struct gm_Camera* gm_camera(float x, float y, float z){
     gmCamera.x = x;

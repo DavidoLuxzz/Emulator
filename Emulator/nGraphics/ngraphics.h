@@ -82,6 +82,8 @@ int min(int a, int b);
 int max(int a, int b);
 NG_DOT minp(NG_DOT p1,NG_DOT p2,NG_DOT p3);
 NG_DOT maxp(NG_DOT p1,NG_DOT p2,NG_DOT p3);
+NG_DOT _minp(NG_DOT p[3]);
+NG_DOT _maxp(NG_DOT p[3]);
 _Bool _ptInTriangle(NG_DOT p, NG_DOT p0, NG_DOT p1, NG_DOT p2);
 // drawing operations
 void ngClear(void);
@@ -95,8 +97,19 @@ void ngDrawLines(GLuint npoints, GLint* points, _Bool closeShape);
 
 void ngDrawSprite_GRAY(GLuint x, GLuint y, unsigned char* sprite, unsigned int size[2]);
 
+struct NG_DINT { int x1,x2; };
+typedef struct NG_DINT NG_DINT;
+typedef struct NG_DINT ng_dint;
+
+struct NG_LINEAR_FUNCTION { float k; int n; _Bool xIs0; };
+typedef struct NG_LINEAR_FUNCTION ng_fn;
+
 void _lukaDrawTriangle(NG_POINT points[3]);
 void lukaDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3);
 void lukaDrawQuad2D(NG_POINT points[4], int type);
+
+void _sofDrawTriangle(NG_POINT points[3]);
+void sofDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3);
+void sofDrawQuad2D(NG_POINT points[4], int type);
 
 #endif /* ngraphics_h */
