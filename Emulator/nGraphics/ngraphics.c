@@ -251,7 +251,7 @@ NG_POINT _maxp2(NG_POINT p1, NG_POINT p2){
  * Sto veci trougao to sporije crta, crtanje optimizovano koliko moze. Racunanje pravi problem...
  * Algoritam prespor
  */
-void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3){
+void _pxDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3){
     NG_DOT bounds[2] = {minp(p1, p2, p3), maxp(p1, p2, p3)};
     NG_DOT p;
     for (int y=max(bounds[0].y,0); y<=min(bounds[1].y, __ngScreenHeight); y++){
@@ -275,22 +275,10 @@ void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3){
         }
     }
 }
-void ngDrawTriangle(GLint x1,GLint y1,GLint x2,GLint y2,GLint x3,GLint y3){
-    NG_DOT p1 = {x1,y1};
-    NG_DOT p2 = {x2,y2};
-    NG_DOT p3 = {x3,y3};
-    _ngDrawTriangle(p1, p2, p3);
+void pxDrawTriangle(NG_POINT points[3]){
+    _ngDrawTriangle(points[0],points[1],points[2]);
 }
 
-void ngDrawQuad2D(NG_POINT points[4], int type){
-    if (type == NG_TRIANGLE_FAN){
-        _ngDrawTriangle(points[0], points[1], points[2]);
-        _ngDrawTriangle(points[0], points[2], points[3]);
-    } else if (type == NG_TRIANGLE_Z){
-        _ngDrawTriangle(points[0], points[1], points[3]);
-        _ngDrawTriangle(points[0], points[3], points[2]);
-    }
-}
 // x bigger
 void _ngDrawLineXb(int x1, int y1, int x2, int y2){
     int m_new = 2 * abs(y2 - y1);
@@ -490,9 +478,9 @@ void _lukaTriangCalcMinxs(NG_POINT p1, NG_POINT p2, NG_DINT v[], const int ymin,
 void _lukaDrawHBlock(int x1, int x2, int y){
     for (int x=x1; x<x2; x++) ngDrawPixel(x, y);
 }
-void _lukaDrawTriangle(NG_POINT points[3]){
-    const int _pminy = min(max(minp(points[0], points[1], points[2]).y, 0), __ngScreenHeight);
-    const int _pmaxy = max(min(maxp(points[0], points[1], points[2]).y, __ngScreenHeight), 0);
+void _lukaDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
+    const int _pminy = min(max(minp(_d1, _d2, _d3).y, 0), __ngScreenHeight);
+    const int _pmaxy = max(min(maxp(_d1, _d2, _d3).y, __ngScreenHeight), 0);
     const int H = _pmaxy - _pminy;
     if (H<=0){
         printf("[WARN] H <= 0;  not drawing triangle\n");
@@ -502,9 +490,9 @@ void _lukaDrawTriangle(NG_POINT points[3]){
     const ng_dint vnull = {__ngScreenWidth-1, 0};
     for (int _i=0; _i<H; _i++) v[_i] = vnull;
     
-    _lukaTriangCalcMinxs(points[0], points[1], v, _pminy, _pmaxy);
-    _lukaTriangCalcMinxs(points[1], points[2], v, _pminy, _pmaxy);
-    _lukaTriangCalcMinxs(points[0], points[2], v, _pminy, _pmaxy);
+    _lukaTriangCalcMinxs(_d1, _d2, v, _pminy, _pmaxy);
+    _lukaTriangCalcMinxs(_d2, _d3, v, _pminy, _pmaxy);
+    _lukaTriangCalcMinxs(_d1, _d3, v, _pminy, _pmaxy);
     
     for (int y=_pminy; y<_pmaxy; y++){
         int x1 = v[y-_pminy].x1;
@@ -515,19 +503,8 @@ void _lukaDrawTriangle(NG_POINT points[3]){
     }
 }
 
-void lukaDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
-    NG_POINT points[3] = {_d1, _d2, _d3};
-    _lukaDrawTriangle(points);
-}
-
-void lukaDrawQuad2D(NG_POINT points[4], int type){
-    if (type == NG_TRIANGLE_FAN){
-        lukaDrawTriangle(points[0], points[1], points[2]);
-        lukaDrawTriangle(points[0], points[2], points[3]);
-    } else if (type == NG_TRIANGLE_Z){
-        lukaDrawTriangle(points[0], points[1], points[3]);
-        lukaDrawTriangle(points[0], points[3], points[2]);
-    }
+void lukaDrawTriangle(NG_POINT points[3]){
+    _lukaDrawTriangle(points[0], points[1], points[2]);
 }
 
 
@@ -555,7 +532,7 @@ void _fnCalculate(NG_POINT p1, NG_POINT p2, ng_fn* fn){
     fn->xIs0 = x0;
 }
 
-void _sofDrawfn(ng_fn* fn, NG_POINT bounds[2]){
+void _ngDrawfn(ng_fn* fn, NG_POINT bounds[2]){
     if (fn->k == 0.0f){
         if (fn->n>=bounds[0].y && fn->n<=bounds[1].y)
             for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
@@ -569,9 +546,22 @@ void _sofDrawfn(ng_fn* fn, NG_POINT bounds[2]){
     for (int y=bounds[0].y; y<bounds[1].y; y++){
         int x = (int)((float)(y-fn->n) / fn->k);
         if (x>=bounds[0].x && x<=bounds[1].x){
-            ngDrawPixel(x, y);
-            ngDrawPixel(x+1, y); // izbrisati
+            for (int _ix=0; _ix < (int)(1.0f/fn->k); _ix++) ngDrawPixel(x+_ix, y);
         }
+    }
+}
+/**
+ * Draws a line with given equation
+ * @param fn - equation of the line
+ * @param bounds - given bounds of the line. If set to NULL then it will draw thru whole screen
+ * @see <struct ng_fn>
+ */
+void ngDrawfn(ng_fn* fn, NG_POINT bounds[2]){
+    if (bounds)
+        _ngDrawfn(fn, bounds);
+    else {
+        NG_POINT _scr_bounds[] = { {0,0}, {__ngScreenWidth,__ngScreenHeight} };
+        _ngDrawfn(fn, _scr_bounds);
     }
 }
 
@@ -582,7 +572,7 @@ void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
         if (fn->n>=bounds[0].y && fn->n<=bounds[1].y){
             v[fn->n-ymin].x1 = bounds[0].x;
             v[fn->n-ymin].x2 = bounds[1].x;
-            for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
+//            for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
         }
         return;
     }
@@ -594,7 +584,7 @@ void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
                     v[i].x1 = fn->n;
                 if (v[i].x2 < fn->n)
                     v[i].x2 = fn->n;
-                ngDrawPixel(fn->n, y);
+//                ngDrawPixel(fn->n, y);
                 i++;
             }
         }
@@ -608,14 +598,14 @@ void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
                 v[i].x1 = x;
             if (v[i].x2 < x)
                 v[i].x2 = x;
-            ngDrawPixel(x, y);
-            ngDrawPixel(x+1, y); // izbrisati
+//            ngDrawPixel(x, y);
+//            ngDrawPixel(x+1, y); // izbrisati
         }
         i++;
     }
 }
 
-void _sofDrawTriangle(NG_POINT points[3]){
+void sofDrawTriangle(NG_POINT points[3]){
     ng_fn sides[3];
     _fnCalculate(points[0], points[1], &sides[0]); // sides[0] - (p1, p2)
     _fnCalculate(points[1], points[2], &sides[1]); // sides[1] - (p2, p3)
@@ -642,17 +632,52 @@ void _sofDrawTriangle(NG_POINT points[3]){
     }
 }
 
-void sofDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
+void _sofDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
     NG_POINT points[3] = {_d1, _d2, _d3};
-    _sofDrawTriangle(points);
+    sofDrawTriangle(points);
 }
+
+
+void _ngDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3){
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_SOFN) _sofDrawTriangle(p1, p2, p3);
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_LUKA) _lukaDrawTriangle(p1, p2, p3);
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_PIXL) _pxDrawTriangle(p1, p2, p3);
+}
+
+void ngDrawTriangle(NG_POINT points[3]){
+    _ngDrawTriangle(points[0], points[1], points[2]);
+}
+
 
 void sofDrawQuad2D(NG_POINT points[4], int type){
     if (type == NG_TRIANGLE_FAN){
-        sofDrawTriangle(points[0], points[1], points[2]);
-        sofDrawTriangle(points[0], points[2], points[3]);
+        _sofDrawTriangle(points[0], points[1], points[2]);
+        _sofDrawTriangle(points[0], points[2], points[3]);
     } else if (type == NG_TRIANGLE_Z){
-        sofDrawTriangle(points[0], points[1], points[3]);
-        sofDrawTriangle(points[0], points[3], points[2]);
+        _sofDrawTriangle(points[0], points[1], points[3]);
+        _sofDrawTriangle(points[0], points[3], points[2]);
     }
+}
+void lukaDrawQuad2D(NG_POINT points[4], int type){
+    if (type == NG_TRIANGLE_FAN){
+        _lukaDrawTriangle(points[0], points[1], points[2]);
+        _lukaDrawTriangle(points[0], points[2], points[3]);
+    } else if (type == NG_TRIANGLE_Z){
+        _lukaDrawTriangle(points[0], points[1], points[3]);
+        _lukaDrawTriangle(points[0], points[3], points[2]);
+    }
+}
+void pxDrawQuad2D(NG_POINT points[4], int type){
+    if (type == NG_TRIANGLE_FAN){
+        _pxDrawTriangle(points[0], points[1], points[2]);
+        _pxDrawTriangle(points[0], points[2], points[3]);
+    } else if (type == NG_TRIANGLE_Z){
+        _pxDrawTriangle(points[0], points[1], points[3]);
+        _pxDrawTriangle(points[0], points[3], points[2]);
+    }
+}
+void ngDrawQuad2D(NG_POINT points[4], int type){
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_SOFN) sofDrawQuad2D(points, type);
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_LUKA) lukaDrawQuad2D(points, type);
+    if (__ngflags[NG_DEFAULT_TRIANGLE_ALGORITHM] == NG_TRI_ALGO_PIXL) pxDrawQuad2D(points, type);
 }

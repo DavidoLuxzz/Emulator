@@ -85,6 +85,7 @@ int main(){
     ngConfig(NG_ALL_GRAY, NG_TRUE);
     ngConfig(NG_SHOW_FPS, NG_TRUE);
     ngConfig(NG_PRINT_LOG, NG_TRUE);
+    ngConfig(NG_DEFAULT_TRIANGLE_ALGORITHM, NG_TRI_ALGO_SOFN);
     
     ngUISetup(720, 376, 4);
     ngUIAddEntry("PONG (C)\0");
