@@ -23,7 +23,7 @@ int mousex, mousey;
 void prog3_init(void){
     redrawa = NG_TRUE;
     gm_ortho((float)__ngScreenWidth/2.0, (float)__ngScreenHeight/2.0, (float)__ngScreenWidth*tanf((float)PROG3_FOV/2.0)/2.0, 1000.0);
-    gm_set_clip_z(50.0f);
+    gm_set_clip_z(0.0f);
     prog3_camera = gm_camera(0.0, -100.0, 0.0);
     ngUpdateMousePos();
     mousex = ngGetMousePosX();

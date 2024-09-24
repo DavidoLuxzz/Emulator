@@ -575,6 +575,46 @@ void _sofDrawfn(ng_fn* fn, NG_POINT bounds[2]){
     }
 }
 
+
+
+void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
+    if (fn->k == 0.0f){ // horizontal
+        if (fn->n>=bounds[0].y && fn->n<=bounds[1].y){
+            v[fn->n-ymin].x1 = bounds[0].x;
+            v[fn->n-ymin].x2 = bounds[1].x;
+            for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
+        }
+        return;
+    }
+    if (fn->xIs0){ // vertical
+        if (fn->n>=bounds[0].x && fn->n<=bounds[1].x){
+            int i=bounds[0].y-ymin;
+            for (int y=bounds[0].y; y<bounds[1].y; y++) {
+                if (v[i].x1 > fn->n)
+                    v[i].x1 = fn->n;
+                if (v[i].x2 < fn->n)
+                    v[i].x2 = fn->n;
+                ngDrawPixel(fn->n, y);
+                i++;
+            }
+        }
+        return;
+    }
+    int i=bounds[0].y-ymin;
+    for (int y=bounds[0].y; y<bounds[1].y; y++){ // random
+        int x = (int)((float)(y-fn->n) / fn->k);
+        if (x>=bounds[0].x && x<=bounds[1].x){
+            if (v[i].x1 > x)
+                v[i].x1 = x;
+            if (v[i].x2 < x)
+                v[i].x2 = x;
+            ngDrawPixel(x, y);
+            ngDrawPixel(x+1, y); // izbrisati
+        }
+        i++;
+    }
+}
+
 void _sofDrawTriangle(NG_POINT points[3]){
     ng_fn sides[3];
     _fnCalculate(points[0], points[1], &sides[0]); // sides[0] - (p1, p2)
@@ -585,9 +625,21 @@ void _sofDrawTriangle(NG_POINT points[3]){
     NG_POINT bounds23[2] = { _minp2(points[1], points[2]), _maxp2(points[1], points[2]) };
     NG_POINT bounds13[2] = { _minp2(points[0], points[2]), _maxp2(points[0], points[2]) };
     
-    _sofDrawfn(&sides[0], bounds12);
-    _sofDrawfn(&sides[1], bounds23);
-    _sofDrawfn(&sides[2], bounds13);
+    int ymin = _minp(points).y;
+    int H = _maxp(points).y - ymin;
+    
+    ng_dint v[H];
+    const ng_dint vnull = {__ngScreenWidth-1, 0};
+    for (int _i=0; _i<H; _i++) v[_i] = vnull;
+    
+    _sofMinxsfn(&sides[0], bounds12, v, ymin);
+    _sofMinxsfn(&sides[1], bounds23, v, ymin);
+    _sofMinxsfn(&sides[2], bounds13, v, ymin);
+    ngColor(255, 0, 0);
+    for (int i=0; i<H; i++){
+//        printf("i: %d  x1: %d,  x2: %d\n", i, v[i].x1,  v[i].x2);
+        for (int x=v[i].x1; x<v[i].x2; x++) ngDrawPixel(x, i+ymin);
+    }
 }
 
 void sofDrawTriangle(NG_POINT _d1, NG_POINT _d2, NG_POINT _d3){
