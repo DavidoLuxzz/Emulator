@@ -83,7 +83,7 @@ struct NG_DINT { int x1,x2; };
 typedef struct NG_DINT NG_DINT;
 typedef struct NG_DINT ng_dint;
 
-struct NG_LINEAR_FUNCTION { float k; int n; _Bool xIs0; };
+struct NG_LINEAR_FUNCTION { float k; int n; _Bool dxIs0; };
 typedef struct NG_LINEAR_FUNCTION ng_fn;
 // and functions for them
 GLintptr _ngPosition(int x, int y);

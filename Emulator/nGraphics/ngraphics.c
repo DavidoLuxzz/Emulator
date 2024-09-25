@@ -518,18 +518,18 @@ int _fnGetX(int yline, int yfn, float k){
 
 void _fnCalculate(NG_POINT p1, NG_POINT p2, ng_fn* fn){
     float _k = 1.0f;
-    int _n, x0=0;
+    int _n, dx0=0;
     if (p2.x - p1.x != 0) {
         _k = (float)(p2.y-p1.y)/(float)(p2.x-p1.x);
         _n = p1.y - (int)(_k*(float)p1.x);
     } else {
-        x0 = 1;
+        dx0 = 1;
         _n = p1.x;
     }
     
     fn->k = _k;
     fn->n = _n;
-    fn->xIs0 = x0;
+    fn->dxIs0 = dx0;
 }
 
 void _ngDrawfn(ng_fn* fn, NG_POINT bounds[2]){
@@ -538,7 +538,7 @@ void _ngDrawfn(ng_fn* fn, NG_POINT bounds[2]){
             for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
         return;
     }
-    if (fn->xIs0){
+    if (fn->dxIs0){
         if (fn->n>=bounds[0].x && fn->n<=bounds[1].x)
             for (int y=bounds[0].y; y<bounds[1].y; y++) ngDrawPixel(fn->n, y);
         return;
@@ -566,20 +566,31 @@ void ngDrawfn(ng_fn* fn, NG_POINT bounds[2]){
 }
 
 
+int _limitX(int x){
+    if (x<0) return 0;
+    if (x>=__ngScreenWidth) return __ngScreenWidth-1;
+    return x;
+}
+int _limitY(int y){
+    if (y<0) return 0;
+    if (y>=__ngScreenHeight) return __ngScreenHeight-1;
+    return y;
+}
 
 void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
     if (fn->k == 0.0f){ // horizontal
-        if (fn->n>=bounds[0].y && fn->n<=bounds[1].y){
+        if (fn->n>=_limitY(bounds[0].y) && fn->n<=_limitY(bounds[1].y)){
             v[fn->n-ymin].x1 = bounds[0].x;
             v[fn->n-ymin].x2 = bounds[1].x;
 //            for (int x=bounds[0].x; x<bounds[1].x; x++) ngDrawPixel(x, fn->n);
         }
         return;
     }
-    if (fn->xIs0){ // vertical
-        if (fn->n>=bounds[0].x && fn->n<=bounds[1].x){
-            int i=bounds[0].y-ymin;
-            for (int y=bounds[0].y; y<bounds[1].y; y++) {
+    if (fn->dxIs0){ // vertical
+        if (fn->n>=_limitX(bounds[0].x) && fn->n<=_limitX(bounds[1].x)){
+            int lb0y = _limitY(bounds[0].y);
+            int i=lb0y-ymin;
+            for (int y=lb0y; y<_limitY(bounds[1].y); y++) {
                 if (v[i].x1 > fn->n)
                     v[i].x1 = fn->n;
                 if (v[i].x2 < fn->n)
@@ -590,8 +601,10 @@ void _sofMinxsfn(ng_fn* fn, NG_POINT bounds[2], ng_dint v[], int ymin){
         }
         return;
     }
-    int i=bounds[0].y-ymin;
-    for (int y=bounds[0].y; y<bounds[1].y; y++){ // random
+    int lb0y = _limitY(bounds[0].y);
+    int i = lb0y-ymin;
+//    printf("miunxsfn i: %d\n", i);
+    for (int y=lb0y; y<_limitY(bounds[1].y); y++){ // random
         int x = (int)((float)(y-fn->n) / fn->k);
         if (x>=bounds[0].x && x<=bounds[1].x){
             if (v[i].x1 > x)
@@ -615,8 +628,13 @@ void sofDrawTriangle(NG_POINT points[3]){
     NG_POINT bounds23[2] = { _minp2(points[1], points[2]), _maxp2(points[1], points[2]) };
     NG_POINT bounds13[2] = { _minp2(points[0], points[2]), _maxp2(points[0], points[2]) };
     
-    int ymin = _minp(points).y;
-    int H = _maxp(points).y - ymin;
+    int ymin = _limitY(_minp(points).y);
+    int _H = _limitY(_maxp(points).y) - ymin;
+    
+//    printf("_H: %d\n", _H);
+    if (_H < 1) return;
+    
+    int H = _limitY(_H);
     
     ng_dint v[H];
     const ng_dint vnull = {__ngScreenWidth-1, 0};
@@ -625,10 +643,12 @@ void sofDrawTriangle(NG_POINT points[3]){
     _sofMinxsfn(&sides[0], bounds12, v, ymin);
     _sofMinxsfn(&sides[1], bounds23, v, ymin);
     _sofMinxsfn(&sides[2], bounds13, v, ymin);
-    ngColor(255, 0, 0);
+    
     for (int i=0; i<H; i++){
-//        printf("i: %d  x1: %d,  x2: %d\n", i, v[i].x1,  v[i].x2);
-        for (int x=v[i].x1; x<v[i].x2; x++) ngDrawPixel(x, i+ymin);
+        int x1 = _limitX(v[i].x1);
+        int x2 = _limitX(v[i].x2);
+//        printf("i: %d  x1: %d,  x2: %d\n", i, x1,  x2);
+        for (int x=x1; x<x2; x++) ngDrawPixel(x, i+ymin);
     }
 }
 
