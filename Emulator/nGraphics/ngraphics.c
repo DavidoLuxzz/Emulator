@@ -14,8 +14,34 @@ GLubyte* __ngScreen;
 GLuint __ngScreenVBO, __ngScreenVAO, __ngScreenEBO;
 GLuint __ngScreenTexture;
 
-unsigned int __ngScreenWidth, __ngScreenHeight;
-unsigned int __ngScreenSize;
+unsigned int __ngScreenWidth, __ngScreenHeight; // in monitor(screen) pixels
+unsigned int __ngScreenSize;                    // in monitor(screen) pixels
+unsigned char __ngPixelScale;                   // pixel scale | 1 emu pixel = 1 monitor pixel * pixel scale
+
+void ngSetProperty(int id, unsigned int val){
+    switch(id){
+        case NG_PIXEL_SCALE:
+            __ngPixelScale = val;
+            break;
+        default:
+            printf("[WARN] access denied for changing property %d\n", id);
+            break;
+    }
+}
+void ngIncProperty(int id){
+    ngSetProperty(id, ngGetProperty(id)+1);
+}
+void ngDecProperty(int id){
+    ngSetProperty(id, ngGetProperty(id)-1);
+}
+unsigned int ngGetProperty(int id){
+    if (id==NG_PIXEL_SCALE) return __ngPixelScale;
+    if (id==NG_SCREEN_WIDTH) return __ngScreenWidth;
+    if (id==NG_SCREEN_HEIGHT) return __ngScreenHeight;
+    if (id==NG_SCALED_SCREEN_WIDTH) return __ngScreenWidth/__ngPixelScale;
+    if (id==NG_SCALED_SCREEN_HEIGHT) return __ngScreenHeight/__ngPixelScale;
+    return 0;
+}
 
 NGMAINLOOPFUNC __ngUserMainLoop;
 
@@ -184,7 +210,7 @@ void ngClear(void){
     }
 }
 
-void ngDrawPixel(int x, int y){
+void _ngDrawPixel(int x, int y){
     GLintptr pos = 3*_ngPosition(x, y);
     if (!__ngflags[NG_ALL_GRAY]){
         __ngScreen[pos]   = __ngColor[0];
@@ -192,6 +218,13 @@ void ngDrawPixel(int x, int y){
         __ngScreen[pos+2] = __ngColor[2];
     } else {
         memset(__ngScreen+pos, __ngColor[0], 3);
+    }
+}
+void ngDrawPixel(int x, int y){
+    for (int xa=0; xa<__ngPixelScale; xa++){
+        for (int ya=0; ya<__ngPixelScale; ya++){
+            _ngDrawPixel(__ngPixelScale*x+xa, __ngPixelScale*y+ya);
+        }
     }
 }
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h){
@@ -631,7 +664,6 @@ void sofDrawTriangle(NG_POINT points[3]){
     int ymin = _limitY(_minp(points).y);
     int _H = _limitY(_maxp(points).y) - ymin;
     
-//    printf("_H: %d\n", _H);
     if (_H < 1) return;
     
     int H = _limitY(_H);

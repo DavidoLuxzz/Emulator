@@ -14,22 +14,57 @@ const unsigned int WIDTH = 1024;
 const unsigned int HEIGHT = 600;
 
 _Bool emu_redraw = NG_TRUE;
+_Bool emu_cfg_redraw = NG_TRUE;
+int emu_cfg_selected = 0;
 _Bool emu_progActive = NG_FALSE;
 int emu_progExitCode;
 
 void emu_after_prog(void);
-void emu_config(void){
-    if (ngGetKey(GLFW_KEY_ESCAPE)){
+void emu_cfg_input(void){
+    if (ngGetKey(GLFW_KEY_UP)){
+        emu_cfg_selected-=1;
+        emu_cfg_redraw = NG_TRUE;
+        ngLockKey(GLFW_KEY_UP); // lock key to prevent multiple clicks
+    } else if (ngGetKey(GLFW_KEY_DOWN)){
+        emu_cfg_selected+=1;
+        emu_cfg_redraw = NG_TRUE;
+        ngLockKey(GLFW_KEY_DOWN); // lock key to prevent multiple clicks
+    }
+    
+    if (ngGetKey(GLFW_KEY_RIGHT)){
+        ngIncProperty(emu_cfg_selected);
+        emu_cfg_redraw = NG_TRUE;
+        ngLockKey(GLFW_KEY_RIGHT);
+    } else if (ngGetKey(GLFW_KEY_LEFT)){
+        ngDecProperty(emu_cfg_selected);
+        emu_cfg_redraw = NG_TRUE;
+        ngLockKey(GLFW_KEY_LEFT);
+    }
+    
+    if (ngGetKey(GLFW_KEY_ESCAPE)) {
         emu_redraw = NG_TRUE;
         ngLockKey(GLFW_KEY_ESCAPE);
         ngSetMainLoopFunction(emu_after_prog);
-        return;
     }
-    if (1){
+}
+
+void emu_config(void){
+    emu_cfg_input();
+    if (emu_cfg_redraw){
         ngColor(0, 0, 0);
         ngClear();
+        ngColor(NG_LAZY_WHITE);
         
-        emu_redraw = 0;
+        ngDrawText(2, 2, "Configuration Menu", 18);
+        ngDrawChar(2, 30+emu_cfg_selected*__ngFontScale*NG_FONT_HEIGHT, NG_FONT1_RIGHT_ARW);
+        
+        ngDrawText(4+__ngFontScale*NG_FONT_WIDTH, 30, "Pixel scale:", 12);
+        unsigned char _psChar = __ngPixelScale;
+        if (_psChar < 10) _psChar += '0';
+        else _psChar += 'A'-0xA;
+        ngDrawChar(4+__ngFontScale*NG_FONT_WIDTH*14, 30, _psChar);
+        
+        emu_cfg_redraw = 0;
     }
 }
 
@@ -49,6 +84,7 @@ void emu_input(void){
     } else if (ngGetKey(GLFW_KEY_ESCAPE)) {
         ngPerformExit();
     } else if (ngGetKey(GLFW_KEY_F1)){
+        emu_cfg_redraw = NG_TRUE;
         ngSetMainLoopFunction(emu_config);
     }
 }
@@ -83,7 +119,8 @@ int main(){
     
     // Experimental
     ngConfig(NG_ALL_GRAY, NG_TRUE);
-    ngConfig(NG_SHOW_FPS, NG_TRUE);
+    
+//    ngConfig(NG_SHOW_FPS, NG_TRUE);
     ngConfig(NG_PRINT_LOG, NG_TRUE);
     ngConfig(NG_DEFAULT_TRIANGLE_ALGORITHM, NG_TRI_ALGO_SOFN);
     
@@ -95,8 +132,7 @@ int main(){
     
     emu_init();
     ngInitTextColoring(2); // max 2 color changes per text
-    prog3_init();
-    ngSetMainLoopFunction(prog3_main);
+    ngSetMainLoopFunction(emu_main);
     ngMainLoop();
     
     ngUIDestroy();

@@ -44,7 +44,7 @@ void ngUIShowEntryText(ng_lde* e){
 }
 void ngUIShow(void){
     ngDrawText(__ngUIx+20, 40, "EmuLoader v1.0.3 for Assembly", 29);
-    ngDrawText(__ngUIx+10, __ngUIy+__ngUIheight+40, "[F1] Configurate    [ENTER] Select", 27);
+    ngDrawText(__ngUIx+10, __ngUIy+__ngUIheight+40, "[F1] Configurate    [ENTER] Select", 34);
     ngDrawText(5, __ngScreenHeight-20, "v1.0.3", 6);
     // -- BORDERS -- //
     // up-down

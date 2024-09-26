@@ -19,6 +19,7 @@
 #include "ng_loadUI.h"
 #endif
 
+// Flags
 #define NG_WINDOW_CREATE_SUCCESS 0x0
 #define NG_OPENGL_LOAD_SUCCESS 0x1
 #define NG_OPENGL_PROGRAM_STATUS 0x2
@@ -47,7 +48,19 @@ extern GLuint __ngScreenVBO, __ngScreenVAO, __ngScreenEBO;
 extern GLuint __ngScreenTexture;
 extern unsigned int __ngScreenWidth, __ngScreenHeight;
 extern unsigned int __ngScreenSize;
+extern unsigned char __ngPixelScale;
 
+// Properties (not flags)
+#define NG_PIXEL_SCALE 0x0
+#define NG_SCALED_SCREEN_WIDTH 0x1
+#define NG_SCALED_SCREEN_HEIGHT 0x2
+#define NG_SCREEN_WIDTH 0x3
+#define NG_SCREEN_HEIGHT 0x4
+
+void ngSetProperty(int id, unsigned int val);
+void ngIncProperty(int id);
+void ngDecProperty(int id);
+unsigned int ngGetProperty(int id);
 void ngPerformExit(void);
 void ngTerminate(void);
 void ngWait(unsigned long);
@@ -99,19 +112,20 @@ NG_DOT _maxp(NG_DOT p[3]);
 _Bool _ptInTriangle(NG_DOT p, NG_DOT p0, NG_DOT p1, NG_DOT p2);
 // drawing operations
 void ngClear(void);
+void _ngDrawPixel(int x, int y);
 void ngDrawPixel(int x, int y);
 void ngDrawRectangle(GLuint x, GLuint y, GLuint w, GLuint h);
 
 // -- all triangle drawing algorithms -- //
 void _ngDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3);
 void ngDrawTriangle(NG_POINT points[3]);
-// pixel by pixel (slow)
+// pixel by pixel (spor)
 void _pxDrawTriangle(NG_DOT p1, NG_DOT p2, NG_DOT p3);
 void pxDrawTriangle(NG_POINT points[3]);
-// luka scanline (doesn't work)
+// luka scanline (ne radi i ne pokusavaj)
 void _lukaDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3);
 void lukaDrawTriangle(NG_POINT points[3]);
-// sof fn scanline (fast)
+// sof fn scanline (brz, poteskoca sa crtanjem 30+ trougla odjednom)
 void _sofDrawTriangle(NG_POINT p1, NG_POINT p2, NG_POINT p3);
 void sofDrawTriangle(NG_POINT points[3]);
 // ------------------------------------- //

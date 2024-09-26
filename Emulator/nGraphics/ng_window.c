@@ -25,6 +25,7 @@ void ngCreateWindow(int width, int height, const char* title){
     __ngScreenWidth = width;
     __ngScreenHeight = height;
     __ngScreenSize = width*height;
+    __ngPixelScale = 1;
     // glfw window creation
     __ngWindow = glfwCreateWindow(width, height, title, NULL, NULL);
     if (__ngWindow == NULL) {
